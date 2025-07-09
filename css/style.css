@@ -3,3 +3,173 @@
     margin: 0%;
     font-family: sans-serif;
 }
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.medsos {
+    padding: 5px 0;
+    background-color: blue;
+}
+
+.medsos ul li {
+    display: inline-block;
+    color: whitesmoke;
+    margin-right: 10px;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.container:after {
+    content: " ";
+    display: block;
+    clear: both;
+}
+
+header h1 {
+    float: left;
+    padding: 15px 0;
+    color: blue;
+}
+
+header ul {
+    float: right;
+}
+
+header ul li {
+    display: inline-block;
+}
+
+header ul li a {
+    padding: 24px 20px;
+    display: inline-block;
+}
+
+header ul li a:hover {
+    background-color: blue;
+    color: whitesmoke;
+}
+
+.active {
+    background-color: blue;
+    color: whitesmoke;
+}
+
+.banner {
+    height: 60vh;
+    background-image: url("../img/banner.jpg");
+    background-size: cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0;
+    background-color: rgba(91, 95, 222, 0.6);
+}
+
+.banner h2 {
+    color: whitesmoke;
+    z-index: 1;
+    padding: 20px 25px;
+    border: 3px solid whitesmoke;
+}
+
+section {
+    padding: 50px 0;
+}
+
+section h3 {
+    text-align: center;
+    padding: 20px 0;
+    color: blue;
+    margin-bottom: 15px;
+}
+
+.about,
+.kegiatan {
+    padding-bottom: 100px;
+}
+
+.about p {
+    color: black;
+    word-spacing: 2px;
+    line-height: 25px;
+    text-align: justify;
+    margin-bottom: 5px;
+}
+
+.kegiatan {
+    background-color: #d3d3d3;
+}
+
+.box {
+    color: blue;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.kegiatan .col-3:nth-child(1) .icon {
+    color: #2c3e50;
+}
+
+/* Kuliah */
+.kegiatan .col-3:nth-child(2) .icon {
+    color: #3498db;
+}
+
+/* Mobile App */
+.kegiatan .col-3:nth-child(3) .icon {
+    color: #0acf83;
+}
+
+.box:after {
+    content: " ";
+    display: block;
+    clear: both;
+}
+
+.box .col-3 {
+    width: 25%;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    float: left;
+}
+
+.icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 70px;
+    font-size: 30px;
+    margin: 0% auto;
+}
+
+.box .col-3 h4 {
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+footer {
+    padding: 30px 0;
+    background-color: #333;
+    color: whitesmoke;
+    text-align: center;
+}
