@@ -45,8 +45,37 @@
     <section class="foto">
         <div class="container">
             <h3>FOTO</h3>
+            <h1 style="text-align: center;">PUSING GUA TAI, GATAU INI BENER APA ENGGA</h1>
+            <div class="foto-box">
+                <img src="img/VSCode (1).png" alt="foto 1" class="foto-item">
+                <img src="img/VSCode (2).png" alt="foto 2" class="foto-item">
+                <img src="img/VSCode (3).png" alt="foto 3" class="foto-item">
+                <img src="img/VSCode (4).png" alt="foto 4" class="foto-item">
+
+            </div>
+        </div>
 
     </section>
+    <script>
+        const fotoItems = document.querySelectorAll('.foto-item');
+
+        const showOnScroll = () => {
+            const triggerBottom = window.innerHeight * 0.9;
+
+            fotoItems.forEach(item => {
+                const boxTop = item.getBoundingClientRect().top;
+                const boxBottom = item.getBoundingClientRect().bottom;
+                if (boxTop < triggerBottom && boxBottom > 0) {
+                    item.classList.add('show');
+                } else {
+                    item.classList.remove('show');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', showOnScroll);
+        window.addEventListener('load', showOnScroll);
+    </script>
 
     <!--footer-->
     <footer>
