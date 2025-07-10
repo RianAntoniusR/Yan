@@ -110,6 +110,7 @@ section h3 {
     line-height: 25px;
     text-align: justify;
     margin-bottom: 5px;
+    text-align: center;
 }
 
 .kegiatan {
@@ -172,4 +173,26 @@ footer {
     background-color: #333;
     color: whitesmoke;
     text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}
+
+header h1 {
+    text-align: center;
+    float: none;
+}
+
+header ul {
+    text-align: center;
+    float: none;
+}
+
+.box .col-3 {
+    width: 100%;
+    float: none;
+    margin-bottom: 20px;
 }
