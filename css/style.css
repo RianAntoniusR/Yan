@@ -112,10 +112,6 @@ section h3 {
     margin-bottom: 5px;
 }
 
-.kegiatan {
-    background-color: #d3d3d3;
-}
-
 .box {
     color: blue;
     display: flex;
@@ -167,31 +163,139 @@ section h3 {
     font-size: 15px;
 }
 
-footer {
-    padding: 30px 0;
-    background-color: #333;
-    color: whitesmoke;
+.mediasosial {
+    padding: 40px 0;
+    margin-bottom: 50px;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 
-@media screen and (max-width: 768px) {
-    .container {
-        width: 90%;
+.mediasosial .box ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    /* Jarak antar ikon */
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    /* Biar responsif di layar kecil */
+}
+
+.mediasosial .box ul li a {
+    color: #333;
+    transition: 0.3s ease;
+    display: inline-block;
+}
+
+.mediasosial .box ul li a:hover {
+    color: #007bff;
+    transform: scale(1.2);
+}
+
+.mediasosial .fa-instagram {
+    color: #E1306C;
+}
+
+.mediasosial .fa-facebook {
+    color: #1877F2;
+}
+
+.fa-envelope {
+    color: #333;
+}
+
+.peta {
+    background-color: #d3d3d3;
+}
+
+.bg-loader {
+    background-color: #eee;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-loader .loader {
+    width: 100px;
+    height: 100px;
+    border: 3px solid whitesmoke;
+    border-radius: 50%;
+    border-top-color: blue;
+    border-right-color: blue;
+    border-bottom-color: blue;
+    animation: puterin .8s linear infinite;
+}
+
+@keyframes puterin {
+    100% {
+        transform: rotate(360deg);
     }
 }
 
-header h1 {
-    text-align: center;
-    float: none;
+.pendidikan p {
+    color: black;
+    word-spacing: 2px;
+    line-height: 25px;
+    text-align: justify;
+    margin-bottom: 5px;
 }
 
-header ul {
-    text-align: center;
-    float: none;
-}
-
-.box .col-3 {
+.table {
     width: 100%;
-    float: none;
-    margin-bottom: 20px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.table thead {
+    background-color: #333;
+    color: #fff;
+}
+
+.table th {
+    text-align: center;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+}
+
+.table td {
+    border: 1px solid #ccc;
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #e0e0e0;
+}
+
+footer {
+    padding: 15px 0;
+    background-color: #333;
+    color: whitesmoke;
+    text-align: center;
+    margin-top: auto;
+}
+
+body>.container,
+body>section {
+    flex: 1;
 }
