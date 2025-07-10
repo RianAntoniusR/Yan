@@ -62,28 +62,33 @@ header ul li a:hover {
 
 .banner {
     height: 60vh;
+    min-height: 436px;
     background-image: url("../img/banner.jpg");
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .banner:after {
     content: " ";
-    display: block;
     position: absolute;
     top: 0%;
     left: 0%;
     right: 0%;
     bottom: 0;
     background-color: rgba(91, 95, 222, 0.6);
+    z-index: 0;
 }
 
 .banner h2 {
     color: whitesmoke;
     z-index: 1;
+    position: relative;
     padding: 20px 25px;
     border: 3px solid whitesmoke;
 }
@@ -295,7 +300,81 @@ footer {
     margin-top: auto;
 }
 
-body>.container,
-body>section {
-    flex: 1;
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+
+    header h1,
+    header ul {
+        float: none;
+        text-align: center;
+    }
+
+    header ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    header ul li a {
+        padding: 10px 0;
+        display: block;
+    }
+
+
+    .banner {
+        height: 40vh;
+        background-position: center;
+        flex-direction: column;
+    }
+
+    .banner h2 {
+        font-size: 20px;
+        padding: 10px 15px;
+    }
+
+    .about p {
+        font-size: 15px;
+        line-height: 22px;
+    }
+
+    .box .col-3 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .mediasosial .box ul {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .peta iframe {
+        height: 300px;
+    }
+
+    .foto-ku {
+        width: 100%;
+        max-width: 100%;
+        margin: 20px auto;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    footer {
+        font-size: 12px;
+    }
 }
