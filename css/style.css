@@ -352,7 +352,6 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
