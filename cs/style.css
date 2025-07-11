@@ -66,3 +66,19 @@ nav {
     color: #777;
     margin-top: 4px;
 }
+
+@media (max-width: 767px) {
+    .typing-text {
+        font-size: 14px;
+    }
+
+    .nama-profil {
+        font-size: 16px;
+        margin-top: 60px;
+    }
+
+    .deskripsi-profil-1,
+    .deskripsi-profil-2 {
+        font-size: 12px;
+    }
+}
