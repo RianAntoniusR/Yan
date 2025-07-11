@@ -1,0 +1,415 @@
+* {
+    padding: 0%;
+    margin: 0%;
+    font-family: sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.medsos {
+    padding: 5px 0;
+    background-color: blue;
+}
+
+.medsos ul li {
+    display: inline-block;
+    color: whitesmoke;
+    margin-right: 10px;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.container:after {
+    content: " ";
+    display: block;
+    clear: both;
+}
+
+header h1 {
+    float: left;
+    padding: 15px 0;
+    color: blue;
+}
+
+header ul {
+    float: right;
+}
+
+header ul li {
+    display: inline-block;
+}
+
+header ul li a {
+    padding: 24px 20px;
+    display: inline-block;
+}
+
+header ul li a:hover {
+    background-color: blue;
+    color: whitesmoke;
+}
+
+.active {
+    background-color: blue;
+    color: whitesmoke;
+}
+
+.banner {
+    height: 60vh;
+    min-height: 436px;
+    background-image: url("../img/banner.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.banner:after {
+    content: " ";
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0;
+    background-color: rgba(91, 95, 222, 0.6);
+    z-index: 0;
+}
+
+.banner h2 {
+    color: whitesmoke;
+    z-index: 1;
+    position: relative;
+    padding: 20px 25px;
+    border: 3px solid whitesmoke;
+}
+
+section {
+    padding: 50px 0;
+}
+
+section h3 {
+    text-align: center;
+    padding: 20px 0;
+    color: blue;
+    margin-bottom: 15px;
+}
+
+.about,
+.kegiatan {
+    padding-bottom: 100px;
+}
+
+.about p {
+    color: black;
+    word-spacing: 2px;
+    line-height: 25px;
+    text-align: justify;
+    margin-bottom: 5px;
+}
+
+.box {
+    color: blue;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.kegiatan .col-3:nth-child(1) .icon {
+    color: #2c3e50;
+}
+
+/* Kuliah */
+.kegiatan .col-3:nth-child(2) .icon {
+    color: #3498db;
+}
+
+/* Mobile App */
+.kegiatan .col-3:nth-child(3) .icon {
+    color: #0acf83;
+}
+
+.box .col-3 {
+    width: 25%;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    float: left;
+}
+
+.icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 70px;
+    font-size: 30px;
+    margin: 0% auto;
+}
+
+.box .col-3 h4 {
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+.mediasosial {
+    padding: 40px 0;
+    margin-bottom: 50px;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.mediasosial .box ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    /* Jarak antar ikon */
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    /* Biar responsif di layar kecil */
+}
+
+.mediasosial .box ul li a {
+    color: #333;
+    transition: 0.3s ease;
+    display: inline-block;
+}
+
+.mediasosial .box ul li a:hover {
+    color: #007bff;
+    transform: scale(1.2);
+}
+
+.mediasosial .fa-instagram {
+    color: #E1306C;
+}
+
+.mediasosial .fa-facebook {
+    color: #1877F2;
+}
+
+.fa-envelope {
+    color: #333;
+}
+
+.peta {
+    background-color: #d3d3d3;
+}
+
+.bg-loader {
+    background-color: #eee;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-loader .loader {
+    width: 100px;
+    height: 100px;
+    border: 3px solid whitesmoke;
+    border-radius: 50%;
+    border-top-color: blue;
+    border-right-color: blue;
+    border-bottom-color: blue;
+    animation: puterin .8s linear infinite;
+}
+
+@keyframes puterin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.pendidikan p {
+    color: black;
+    word-spacing: 2px;
+    line-height: 25px;
+    text-align: justify;
+    margin-bottom: 5px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.table thead {
+    background-color: #333;
+    color: #fff;
+}
+
+.table th {
+    text-align: center;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+}
+
+.table td {
+    border: 1px solid #ccc;
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.foto-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding: 40px 0;
+}
+
+.foto-item {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    border: 2px solid #000;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.8s ease-in-out;
+    opacity: 0;
+    transform: translateY(30px);
+    box-sizing: border-box;
+}
+
+.foto-item.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.foto-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .foto-item {
+        width: 100%;
+    }
+}
+
+footer {
+    padding: 15px 0;
+    background-color: #333;
+    color: whitesmoke;
+    text-align: center;
+    margin-top: auto;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+
+    header h1,
+    header ul {
+        float: none;
+        text-align: center;
+    }
+
+    header ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    header ul li a {
+        padding: 10px 0;
+        display: block;
+    }
+
+
+    .banner {
+        height: 40vh;
+        background-position: center;
+        flex-direction: column;
+    }
+
+    .banner h2 {
+        font-size: 20px;
+        padding: 10px 15px;
+    }
+
+    .about p {
+        font-size: 15px;
+        line-height: 22px;
+    }
+
+    .box .col-3 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .mediasosial .box ul {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .peta iframe {
+        height: 300px;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    footer {
+        font-size: 12px;
+    }
+}
