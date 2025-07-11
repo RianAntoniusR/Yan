@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rian Antonius R</title>
     <link rel="stylesheet" href="cs/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
 </head>
 
 <body>
 
     <nav>
-        <ul>
-            <li><a href="#">Beranda</a></li>
-            <li><a href="#">Tentang</a></li>
-            <li><a href="#">Kontak</a></li>
-        </ul>
+        <div class="typing-text">
+            <span id="typing"></span>
+        </div>
     </nav>
 
     <header class="header">
@@ -24,8 +24,24 @@
             <img src="img/Profil 1.jpg" alt="Foto Profil" class="profil">
         </div>
         <h1 class="nama-profil">Rian Antonius Rantepayung</h1>
-        <p class="deskripsi-profil">Mahasiswa Manajemen | Universitas Bosowa</p>
+        <p class="deskripsi-profil-1">Mahasiswa</p>
+        <p class="deskripsi-profil-2">Universitas Bosowa | Manajemen</p>
     </header>
+    <script>
+        const text = "Selamat Datang Cuki...!";
+        let index = 0;
+        const speed = 80;
+
+        function type() {
+            if (index < text.length) {
+                document.getElementById("typing").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(type, speed);
+            }
+        }
+
+        window.onload = type;
+    </script>
 
 
     <script src="js/style.js"></script>
