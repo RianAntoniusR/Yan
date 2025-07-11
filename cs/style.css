@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header {
+    position: relative;
+    height: 300px;
+}
+
+.sampul {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.profil-wrapper {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid white;
+    width: 120px;
+    height: 120px;
+}
+
+.profil {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.nama-profil {
+    text-align: center;
+    margin-top: 70px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.deskripsi-profil {
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+}
