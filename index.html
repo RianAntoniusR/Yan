@@ -25,6 +25,10 @@
                 <i class="fab fa-linkedin ln-icon"></i> LinkedIn
             </a>
         </div>
+        <div class="tanggal-navbar">
+            <i class="fas fa-calendar-alt"></i>
+            <span>13 Juli 2025</span>
+        </div>
     </nav>
 
     <header class="header">
@@ -36,6 +40,21 @@
         <p class="deskripsi-profil-1">Mahasiswa</p>
         <p class="deskripsi-profil-2">Universitas Bosowa | Manajemen</p>
     </header>
+
+    <section class="pemisah-ombak">
+        <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="gradLaut" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#40E0D0; stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#0177A8; stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#gradLaut)" fill-opacity="1"
+                d="M0,64L48,96C96,128,192,192,288,208C384,224,480,192,576,165.3C672,139,768,117,864,128C960,139,1056,181,1152,186.7C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+            </path>
+        </svg>
+    </section>
+
     <section class="tentang-saya">
         <div class="container-tentang">
             <h2>Tentang Saya</h2>
@@ -45,6 +64,48 @@
             </p>
         </div>
     </section>
+
+    <section class="kotak-saran">
+        <h2>Kirim Saran Anda</h2>
+        <form id="formSaran">
+            <input type="text" id="nama" placeholder="Nama Anda" required />
+            <textarea id="saran" placeholder="Saran Anda..." required></textarea>
+            <button type="submit">Kirim</button>
+            <p id="status"></p>
+        </form>
+    </section>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzTqtLF1OU7K-MG-rDgKXyxK296Ig-fvXF5Jzlpm7HsHODZfxzLylv3TgefVUClWZjGsQ/exec';
+        const form = document.getElementById('formSaran');
+        const status = document.getElementById('status');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = {
+                nama: document.getElementById('nama').value,
+                saran: document.getElementById('saran').value
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    status.textContent = 'Saran berhasil dikirim!';
+                    form.reset();
+                })
+                .catch(error => {
+                    status.textContent = 'Gagal mengirim saran.';
+                    console.error('Error!', error.message);
+                });
+        });
+    </script>
+
+
 
     <script src="js/style.js"></script>
 </body>
