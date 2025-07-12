@@ -12,9 +12,18 @@
 
 <body>
 
-    <nav>
-        <div class="typing-text">
-            <span id="typing"></span>
+    <nav class="navbar">
+        <div class="medsos">
+            <a href="https://www.instagram.com/__rian.ar?igsh=MW41anYwZXN1b2tnaQ==" target="_blank">
+                <i class="fab fa-instagram ig-icon"></i> Instagram
+            </a>
+            <a href="https://www.facebook.com/share/16w77Axyic/" target="_blank">
+                <i class="fab fa-facebook fb-icon"></i> Facebook
+            </a>
+            <a href="https://www.linkedin.com/in/rianantoniusr?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                target="_blank">
+                <i class="fab fa-linkedin ln-icon"></i> LinkedIn
+            </a>
         </div>
     </nav>
 
@@ -27,22 +36,15 @@
         <p class="deskripsi-profil-1">Mahasiswa</p>
         <p class="deskripsi-profil-2">Universitas Bosowa | Manajemen</p>
     </header>
-    <script>
-        const text = "Selamat Datang Cuki...!";
-        let index = 0;
-        const speed = 80;
-
-        function type() {
-            if (index < text.length) {
-                document.getElementById("typing").innerHTML += text.charAt(index);
-                index++;
-                setTimeout(type, speed);
-            }
-        }
-
-        window.onload = type;
-    </script>
-
+    <section class="tentang-saya">
+        <div class="container-tentang">
+            <h2>Tentang Saya</h2>
+            <p>Saya adalah mahasiswa aktif di Universitas Bosowa, salah satu perguruan tinggi swasta yang berkembang
+                pesat di kota Makassar. Saya menempuh pendidikan di Fakultas Ekonomi & Bisnis, dengan Program Studi
+                Manajemen.
+            </p>
+        </div>
+    </section>
 
     <script src="js/style.js"></script>
 </body>
