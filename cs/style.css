@@ -139,25 +139,77 @@ body {
     text-align: justify;
 }
 
-.kotak-saran {
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 500px;
-    margin: 50px auto;
-}
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+    }
 
-.kotak-saran input,
-.kotak-saran textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-}
+    .medsos {
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
 
-.kotak-saran button {
-    padding: 10px 16px;
-    background-color: #0077b6;
-    color: white;
-    border: none;
-    cursor: pointer;
+    .medsos a {
+        margin: 6px 8px;
+        font-size: 14px;
+        justify-content: center;
+    }
+
+    .tanggal-navbar {
+        justify-content: center;
+        margin-top: 8px;
+    }
+
+    .header {
+        height: auto;
+    }
+
+    .sampul {
+        height: 200px;
+        object-position: center;
+    }
+
+    .profil-wrapper {
+        width: 100px;
+        height: 100px;
+        bottom: 70px;
+    }
+
+    .nama-profil {
+        font-size: 20px;
+        margin-top: 60px;
+    }
+
+    .deskripsi-profil-1,
+    .deskripsi-profil-2 {
+        font-size: 13px;
+    }
+
+    .tentang-saya {
+        padding: 30px 20px;
+        margin-top: -200px;
+    }
+
+    .tentang-saya h2 {
+        font-size: 18px;
+        padding-left: 0;
+        text-align: left;
+    }
+
+    .tentang-saya p {
+        font-size: 14px;
+        padding: 0;
+        text-align: justify;
+    }
+
+    .pemisah-ombak svg {
+        width: 100%;
+        position: relative;
+        bottom: 122px;
+        height: -190px;
+    }
 }
