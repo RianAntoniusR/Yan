@@ -92,7 +92,7 @@
 .deskripsi-profil-1,
 .deskripsi-profil-2 {
     text-align: center;
-    font-size: 17px;
+    font-size: 15px;
     color: #777;
     margin-top: 4px;
 }
@@ -116,4 +116,12 @@
     line-height: 1.6;
     margin-top: 10px;
     text-align: justify;
+}
+
+@media (max-width: 768px) {
+    .tentang-saya {
+        padding: 20px;
+        background-color: white;
+        text-align: left;
+    }
 }
