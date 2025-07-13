@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loader = document.getElementById("loader");
 
     if (loginForm) {
-        loginForm.addEventListener("submit", (e) => {
+        loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const username = document.getElementById("username").value.trim();
 
@@ -59,23 +59,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
             loader.style.display = "flex";
 
-            // Kirim ke Google Sheets (via Google Apps Script Web App)
-            fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
-                method: "POST",
-                body: JSON.stringify({ nama: username }),
-                headers: { "Content-Type": "application/json" }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    loader.style.display = "none";
-                    alert("Selamat datang, " + username);
-                    // window.location.href = "beranda.html"; // Jika ingin diarahkan
-                })
-                .catch(err => {
-                    loader.style.display = "none";
-                    console.error(err);
-                    alert("Gagal mengirim data.");
+            try {
+                // Ambil lokasi kota
+                const res = await fetch("https://ipapi.co/json");
+                const locationData = await res.json();
+                const kota = locationData.city || "Tidak diketahui";
+                const waktu = new Date().toLocaleString("id-ID");
+
+                // Kirim ke Google Sheets Web App
+                await fetch("https://script.google.com/macros/s/AKfycbyS2xL5Quv0i-aoFV923tlp9Ui8ls8n_ruUAjmIQ8YJiPtVYTyYpUazEWxRHgQg7UN6kA/exec", {
+                    method: "POST",
+                    body: JSON.stringify({ nama: username, kota, waktu }),
+                    headers: { "Content-Type": "application/json" }
                 });
+
+                loader.style.display = "none";
+                alert(`Selamat datang, ${username}!`);
+                // window.location.href = "beranda.html"; // opsional redirect
+            } catch (err) {
+                loader.style.display = "none";
+                console.error(err);
+                alert("Gagal mengirim data.");
+            }
         });
     }
 });
