@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Toggle Password Visibility
+    const toggleIcon = document.querySelector(".toggle-password");
+    const passwordInput = document.getElementById("password");
+
+    if (toggleIcon && passwordInput) {
+        toggleIcon.addEventListener("click", () => {
+            const isPassword = passwordInput.type === "password";
+            passwordInput.type = isPassword ? "text" : "password";
+            toggleIcon.classList.toggle("fa-eye", !isPassword);
+            toggleIcon.classList.toggle("fa-eye-slash", isPassword);
+        });
+    }
+
     // Music Toggle & Select
     const music = document.getElementById("bgmusic");
     const musicToggleBtn = document.getElementById("musicToggleBtn");
@@ -43,50 +56,68 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Login Nama Saja
+    // Login Logic
     const loginForm = document.getElementById("loginForm");
     const loader = document.getElementById("loader");
+    const loginButton = loginForm?.querySelector('button[type="submit"]');
+
+    // Buat elemen hitung mundur
+    const countdownEl = document.createElement("div");
+    countdownEl.style.textAlign = "center";
+    countdownEl.style.marginTop = "10px";
+    countdownEl.style.fontWeight = "bold";
+    countdownEl.style.color = "red";
+    loginForm.appendChild(countdownEl);
+
+    const adminUsername = "rian";
+    const adminPassword = "admin123";
+
+    let attempts = 0;
+    const maxAttempts = 3;
+    const blockDuration = 30;
 
     if (loginForm) {
-        loginForm.addEventListener("submit", async (e) => {
+        loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
-            const username = document.getElementById("username").value.trim();
 
-            if (username === "") {
-                alert("Nama tidak boleh kosong!");
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (password.length < 6) {
+                alert("Password minimal 6 karakter!");
                 return;
             }
 
-            loader.style.display = "flex";
+            if (username === adminUsername && password === adminPassword) {
+                loader.style.display = "flex";
+                setTimeout(() => {
+                    loader.style.display = "none";
+                    alert(`Masuk berhasil, Selamat Datang ${username}`);
+                    // window.location.href = "beranda.html";
+                }, 2000);
+            } else {
+                attempts++;
+                if (attempts >= maxAttempts) {
+                    alert(`Terlalu banyak percobaan salah. Tombol login dinonaktifkan ${blockDuration} detik.`);
+                    if (loginButton) loginButton.style.display = "none";
 
-            try {
-                // Ambil lokasi kota
-                const res = await fetch("https://ipapi.co/json");
-                const locationData = await res.json();
-                const kota = locationData.city || "Tidak diketahui";
-                const waktu = new Date().toLocaleString("id-ID");
+                    let countdown = blockDuration;
+                    countdownEl.textContent = `Coba lagi dalam ${countdown} detik`;
 
-                // Kirim ke Google Sheets Web App
-                await fetch("https://script.google.com/macros/s/AKfycbyS2xL5Quv0i-aoFV923tlp9Ui8ls8n_ruUAjmIQ8YJiPtVYTyYpUazEWxRHgQg7UN6kA/exec", {
-                    method: "POST",
-                    body: JSON.stringify({ nama: username, kota, waktu }),
-                    headers: { "Content-Type": "application/json" }
-                })
-                    .then(res => res.text())
-                    .then(response => {
-                        console.log("Respon dari server:", response);
-                    })
-                    .catch(err => {
-                        console.error("Error kirim:", err);
-                    });
+                    const interval = setInterval(() => {
+                        countdown--;
+                        countdownEl.textContent = `Coba lagi dalam ${countdown} detik`;
 
-                loader.style.display = "none";
-                alert(`Selamat datang, ${username}!`);
-                // window.location.href = "beranda.html"; // opsional redirect
-            } catch (err) {
-                loader.style.display = "none";
-                console.error(err);
-                alert("Gagal mengirim data.");
+                        if (countdown <= 0) {
+                            clearInterval(interval);
+                            countdownEl.textContent = "";
+                            if (loginButton) loginButton.style.display = "block";
+                            attempts = 0;
+                        }
+                    }, 1000);
+                } else {
+                    alert(`Nama Pengguna atau Kata Sandi salah! Percobaan: ${attempts}/${maxAttempts}`);
+                }
             }
         });
     }
