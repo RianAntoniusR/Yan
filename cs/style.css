@@ -211,6 +211,7 @@ button[type="submit"]:hover {
 
     .clock {
         font-size: 24px;
+        padding-top: 50px;
     }
 
     .logo {
