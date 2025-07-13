@@ -71,7 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     method: "POST",
                     body: JSON.stringify({ nama: username, kota, waktu }),
                     headers: { "Content-Type": "application/json" }
-                });
+                })
+                    .then(res => res.text())
+                    .then(response => {
+                        console.log("Respon dari server:", response);
+                    })
+                    .catch(err => {
+                        console.error("Error kirim:", err);
+                    });
 
                 loader.style.display = "none";
                 alert(`Selamat datang, ${username}!`);
