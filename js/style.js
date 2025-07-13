@@ -1,22 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 👁️ Toggle Password Visibility
-    const toggleIcon = document.querySelector(".toggle-password");
-    const passwordInput = document.getElementById("password");
-
-    if (toggleIcon && passwordInput) {
-        toggleIcon.addEventListener("click", () => {
-            const isPassword = passwordInput.type === "password";
-            passwordInput.type = isPassword ? "text" : "password";
-            toggleIcon.classList.toggle("fa-eye", !isPassword);
-            toggleIcon.classList.toggle("fa-eye-slash", isPassword);
-        });
-    }
-
-    // 🎵 Music Toggle
+    // Music Toggle & Select
     const music = document.getElementById("bgmusic");
     const musicToggleBtn = document.getElementById("musicToggleBtn");
+    const musicSelect = document.getElementById("musicSelect");
 
-    if (music && musicToggleBtn) {
+    if (music && musicToggleBtn && musicSelect) {
+        musicSelect.addEventListener("change", () => {
+            const selectedFile = musicSelect.value;
+            music.src = `Lagu/${selectedFile}`;
+            music.pause();
+            musicToggleBtn.textContent = "Play Music";
+        });
+
         musicToggleBtn.addEventListener("click", () => {
             if (music.paused) {
                 music.play()
@@ -34,55 +29,53 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 🔐 Login Logic
+    // Real-Time Clock
+    const clock = document.getElementById("clock");
+    function updateClock() {
+        if (!clock) return;
+        const now = new Date();
+        clock.textContent = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Login Nama Saja
     const loginForm = document.getElementById("loginForm");
     const loader = document.getElementById("loader");
-    const adminUsername = "admin";
-    const adminPassword = "goblok";
 
     if (loginForm) {
         loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
-
             const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
 
-            if (password.length < 6) {
-                alert("Password Minimal 6 Karakter Dongo!!!");
+            if (username === "") {
+                alert("Nama tidak boleh kosong!");
                 return;
             }
 
             loader.style.display = "flex";
 
-            setTimeout(() => {
-                loader.style.display = "none";
-
-                if (username === adminUsername && password === adminPassword) {
-                    alert("Login berhasil, Selamat Datang");
-                    // window.location.href = "home.html";
-                } else {
-                    alert("Salah Dongo!!!");
-                }
-            }, 2000);
+            // Kirim ke Google Sheets (via Google Apps Script Web App)
+            fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+                method: "POST",
+                body: JSON.stringify({ nama: username }),
+                headers: { "Content-Type": "application/json" }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    loader.style.display = "none";
+                    alert("Selamat datang, " + username);
+                    // window.location.href = "beranda.html"; // Jika ingin diarahkan
+                })
+                .catch(err => {
+                    loader.style.display = "none";
+                    console.error(err);
+                    alert("Gagal mengirim data.");
+                });
         });
     }
-
-    // 🕒 Real-Time Clock
-    const clock = document.getElementById("clock");
-
-    function updateClock() {
-        if (!clock) return;
-
-        const now = new Date();
-        const options = {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            timeZoneName: 'short'
-        };
-        clock.textContent = now.toLocaleTimeString('id-ID', options);
-    }
-
-    setInterval(updateClock, 1000);
-    updateClock();
 });
