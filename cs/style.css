@@ -1,215 +1,233 @@
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
 }
 
 body {
-    background: linear-gradient(to bottom, #fceabb, #f8b500, #3f87a6);
-    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1400&q=80');
+    background-size: cover;
+    background-position: center;
 }
 
-.navbar {
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-    padding: 12px 20px;
+.clock {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    font-size: 36px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.login-container {
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95));
+    padding: 30px;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeSlideIn 1.5s ease forwards;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.logo-area {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 35px 10px 35px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.input-group input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    transition: all 0.3s ease;
+}
+
+.input-group .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.input-group .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: blue;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.loader-overlay {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-}
-
-.medsos {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.medsos a {
-    color: white;
-    margin-left: 15px;
-    font-size: 15px;
-    display: inline-flex;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
     align-items: center;
-    gap: 5px;
+    z-index: 999;
+}
+
+.loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid blue;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.options {
+    font-size: 14px;
+    color: #444;
+}
+
+.options p {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px
+}
+
+.options a {
+    color: #007bff;
     text-decoration: none;
 }
 
-.ig-icon {
-    color: #E1306C;
+.options a:hover {
+    text-decoration: underline;
 }
 
-.fb-icon {
-    color: #3b5998;
-}
-
-.ln-icon {
-    color: #0077B5;
-}
-
-.header {
-    position: relative;
-    height: 300px;
-}
-
-.tanggal-navbar {
-    color: white;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.sampul {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    display: block;
-}
-
-.profil-wrapper {
+#musicToggleBtn {
+    all: unset;
     position: absolute;
-    bottom: -60px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    overflow: hidden;
-    border: 5px solid white;
-    width: 120px;
-    height: 120px;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    padding: 8px 14px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.profil {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+#musicToggleBtn:focus {
+    outline: none;
 }
 
-.nama-profil {
-    text-align: center;
-    margin-top: 70px;
-    font-size: 25px;
-    font-weight: bold;
-    color: whitesmoke;
+@keyframes fadeSlideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.deskripsi-profil-1,
-.deskripsi-profil-2 {
-    text-align: center;
-    font-size: 15px;
-    color: whitesmoke;
-    margin-top: 4px;
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.pemisah-ombak {
-    position: relative;
-    z-index: -1;
-    margin-top: 0;
-    line-height: 0;
-}
+@media screen and (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+        border-radius: 10px;
+    }
 
-.pemisah-ombak svg {
-    display: block;
-    width: 100%;
-    height: 500px;
-    transform: scaleY(-1);
-}
 
-.tentang-saya {
-    padding: 50px 30px;
-    z-index: 1;
-    position: relative;
-}
+    .clock {
+        position: center;
+        top: 60px;
+        left: 50%;
+        color: black;
+        font-size: 26px;
+        font-family: monospace;
+        font-weight: bold;
+    }
 
-.tentang-saya h2 {
-    font-size: 20px;
-    padding-left: 30px;
-    color: black;
-    text-align: left;
-}
+    .logo {
+        width: 80px;
+        height: 80px;
+    }
 
-.tentang-saya p {
-    font-size: 15px;
-    padding-left: 30px;
-    padding-right: 30px;
-    color: black;
-    line-height: 1.6;
-    margin-top: 10px;
-    text-align: justify;
-}
+    .logo-area h2 {
+        font-size: 18px;
+        padding: 8px 12px;
+    }
 
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+    .input-group input {
+        font-size: 13px;
+        padding: 10px 32px 10px 32px;
+    }
+
+    button {
+        font-size: 14px;
         padding: 10px;
     }
 
-    .medsos {
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-
-    .medsos a {
-        margin: 6px 8px;
-        font-size: 14px;
-        justify-content: center;
-    }
-
-    .tanggal-navbar {
-        justify-content: center;
-        margin-top: 8px;
-    }
-
-    .header {
-        height: auto;
-    }
-
-    .sampul {
-        height: 200px;
-        object-position: center;
-    }
-
-    .profil-wrapper {
-        width: 100px;
-        height: 100px;
-        bottom: 70px;
-    }
-
-    .nama-profil {
-        font-size: 20px;
-        margin-top: 60px;
-    }
-
-    .deskripsi-profil-1,
-    .deskripsi-profil-2 {
-        font-size: 13px;
-    }
-
-    .tentang-saya {
-        padding: 30px 20px;
-        margin-top: -200px;
-    }
-
-    .tentang-saya h2 {
-        font-size: 18px;
-        padding-left: 0;
-        text-align: left;
-    }
-
-    .tentang-saya p {
-        font-size: 14px;
-        padding: 0;
-        text-align: justify;
-    }
-
-    .pemisah-ombak svg {
-        width: 100%;
-        position: relative;
-        bottom: 122px;
-        height: -190px;
+    #musicToggleBtn {
+        top: 10px;
+        right: 10px;
+        padding: 6px 10px;
+        font-size: 12px;
     }
 }

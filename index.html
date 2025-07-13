@@ -1,70 +1,57 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rian Antonius R</title>
+    <title>Yann</title>
     <link rel="stylesheet" href="cs/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
+    <!-- Music Button & Audio -->
+    <button id="musicToggleBtn">Play Music</button>
+    <audio id="bgmusic" loop>
+        <source src="Lagu/Lagu 1.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+    </audio>
 
-    <nav class="navbar">
-        <div class="medsos">
-            <a href="https://www.instagram.com/__rian.ar?igsh=MW41anYwZXN1b2tnaQ==" target="_blank">
-                <i class="fab fa-instagram ig-icon"></i> Instagram
-            </a>
-            <a href="https://www.facebook.com/share/16w77Axyic/" target="_blank">
-                <i class="fab fa-facebook fb-icon"></i> Facebook
-            </a>
-            <a href="https://www.linkedin.com/in/rianantoniusr?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-                target="_blank">
-                <i class="fab fa-linkedin ln-icon"></i> LinkedIn
-            </a>
+    <!-- Clock -->
+    <div class="clock" id="clock">--:--:--</div>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="logo-area">
+            <img src="img/Profil 1.jpg" alt="Logo" class="logo" />
         </div>
-        <div class="tanggal-navbar">
-            <i class="fas fa-calendar-alt"></i>
-            <span>13 Juli 2025</span>
-        </div>
-    </nav>
+        <h2>Welcome Back</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <i class="fas fa-user icon"></i>
+                <input type="text" id="username" name="username" placeholder="Username" required />
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock icon"></i>
+                <input type="password" id="password" name="password" placeholder="Password" required />
+                <i class="fas fa-eye toggle-password"></i>
+            </div>
+            <div class="options">
+                <label><input type="checkbox" /> Remember me</label>
+                <a href="#">Forgot password?</a>
+                <button type="submit">Login</button>
+                <p>Don't have an account? <a href="#">Sign up</a></p>
+            </div>
+        </form>
+    </div>
 
-    <header class="header">
-        <img src="img/sampul 1.jpg" alt="Foto Sampul" class="sampul">
-        <div class="profil-wrapper">
-            <img src="img/Profil 1.jpg" alt="Foto Profil" class="profil">
-        </div>
-        <h1 class="nama-profil">Rian Antonius Rantepayung</h1>
-        <p class="deskripsi-profil-1">Mahasiswa</p>
-        <p class="deskripsi-profil-2">Universitas Bosowa | Manajemen</p>
-    </header>
+    <!-- Loader -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader"></div>
+    </div>
 
-    <section class="pemisah-ombak">
-        <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="gradLaut" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style="stop-color:#40E0D0; stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#0177A8; stop-opacity:1" />
-                </linearGradient>
-            </defs>
-            <path fill="url(#gradLaut)" fill-opacity="1"
-                d="M0,64L48,96C96,128,192,192,288,208C384,224,480,192,576,165.3C672,139,768,117,864,128C960,139,1056,181,1152,186.7C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
-            </path>
-        </svg>
-    </section>
-
-    <section class="tentang-saya">
-        <div class="container-tentang">
-            <h2>Tentang Saya</h2>
-            <p>Saya mahasiswa aktif di Universitas Bosowa, salah satu perguruan tinggi swasta yang berkembang
-                pesat di kota Makassar. Saya menempuh pendidikan di Fakultas Ekonomi & Bisnis, dengan Program Studi
-                Manajemen.
-            </p>
-        </div>
-    </section>
-
+    <!-- External JavaScript -->
     <script src="js/style.js"></script>
 </body>
 
