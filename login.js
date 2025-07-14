@@ -42,30 +42,20 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     const password = document.getElementById("password").value.trim();
     const loader = document.getElementById("loader");
     const loginButton = document.querySelector("button[type='submit']");
-    const countdownEl = document.getElementById("countdown") || document.createElement("div");
-
-    // Tambahkan elemen countdown jika belum ada
-    if (!countdownEl.id) {
-        countdownEl.id = "countdown";
-        countdownEl.style.textAlign = "center";
-        countdownEl.style.marginTop = "10px";
-        countdownEl.style.fontWeight = "bold";
-        countdownEl.style.color = "red";
-        document.getElementById("loginForm").appendChild(countdownEl);
-    }
+    const countdownEl = document.getElementById("countdown");
 
     let attempts = Number(localStorage.getItem("login_attempts")) || 0;
     const maxAttempts = 3;
     const blockDuration = 30;
 
     if (!username || !password) {
-        alert("Harap Isi Semua Kolom.");
+        alert("Harap isi semua kolom.");
         return;
     }
 
     const storedUser = localStorage.getItem(`user_${username}`);
     if (!storedUser) {
-        alert("Pengguna Tidak Ditemukan.");
+        alert("Pengguna tidak ditemukan.");
         return;
     }
 
@@ -79,10 +69,10 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             loader.style.display = "none";
 
             if (userData.password === hashedInputPassword) {
-                // Berhasil login
+                // Sukses login
                 localStorage.setItem("activeUser", username);
                 localStorage.removeItem("login_attempts");
-                alert(`Selamat Datang Kembali, ${username}!`);
+                alert(`Selamat datang kembali, ${username}!`);
                 window.location.href = "beranda.html";
             } else {
                 // Gagal login
@@ -90,32 +80,34 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                 localStorage.setItem("login_attempts", attempts);
 
                 if (attempts >= maxAttempts) {
-                    alert(`Terlalu Banyak Percobaan Salah. Tombol Login Dinonaktifkan ${blockDuration} detik.`);
+                    alert(`Terlalu banyak percobaan salah. Tombol login dinonaktifkan ${blockDuration} detik.`);
                     loginButton.disabled = true;
 
                     let countdown = blockDuration;
-                    countdownEl.textContent = `Coba Lagi Dalam ${countdown} detik`;
+                    countdownEl.textContent = `Coba lagi dalam ${countdown} detik`;
+                    countdownEl.classList.remove("hidden");
 
                     const interval = setInterval(() => {
                         countdown--;
-                        countdownEl.textContent = `Coba Lagi Dalam ${countdown} detik`;
+                        countdownEl.textContent = `Coba lagi dalam ${countdown} detik`;
 
                         if (countdown <= 0) {
                             clearInterval(interval);
                             countdownEl.textContent = "";
+                            countdownEl.classList.add("hidden");
                             loginButton.disabled = false;
                             localStorage.setItem("login_attempts", 0);
                         }
                     }, 1000);
                 } else {
-                    alert(`Nama Pengguna atau Kata Sandi Salah! Percobaan: ${attempts}/${maxAttempts}`);
+                    alert(`Nama pengguna atau kata sandi salah! Percobaan: ${attempts}/${maxAttempts}`);
                 }
             }
         }, 1000);
 
     } catch (err) {
         loader.style.display = "none";
-        alert("Terjadi Kesalahan Saat Login.");
+        alert("Terjadi kesalahan saat login.");
         console.error(err);
     }
 });
