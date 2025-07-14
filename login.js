@@ -59,13 +59,13 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     const blockDuration = 30;
 
     if (!username || !password) {
-        alert("Harap isi semua kolom.");
+        alert("Harap Isi Semua Kolom.");
         return;
     }
 
     const storedUser = localStorage.getItem(`user_${username}`);
     if (!storedUser) {
-        alert("Pengguna tidak ditemukan.");
+        alert("Pengguna Tidak Ditemukan.");
         return;
     }
 
@@ -82,7 +82,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                 // Berhasil login
                 localStorage.setItem("activeUser", username);
                 localStorage.removeItem("login_attempts");
-                alert(`Selamat datang kembali, ${username}!`);
+                alert(`Selamat Datang Kembali, ${username}!`);
                 window.location.href = "beranda.html";
             } else {
                 // Gagal login
@@ -90,15 +90,15 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                 localStorage.setItem("login_attempts", attempts);
 
                 if (attempts >= maxAttempts) {
-                    alert(`Terlalu banyak percobaan salah. Tombol login dinonaktifkan ${blockDuration} detik.`);
+                    alert(`Terlalu Banyak Percobaan Salah. Tombol Login Dinonaktifkan ${blockDuration} detik.`);
                     loginButton.disabled = true;
 
                     let countdown = blockDuration;
-                    countdownEl.textContent = `Coba lagi dalam ${countdown} detik`;
+                    countdownEl.textContent = `Coba Lagi Dalam ${countdown} detik`;
 
                     const interval = setInterval(() => {
                         countdown--;
-                        countdownEl.textContent = `Coba lagi dalam ${countdown} detik`;
+                        countdownEl.textContent = `Coba Lagi Dalam ${countdown} detik`;
 
                         if (countdown <= 0) {
                             clearInterval(interval);
@@ -108,14 +108,14 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                         }
                     }, 1000);
                 } else {
-                    alert(`Nama pengguna atau kata sandi salah! Percobaan: ${attempts}/${maxAttempts}`);
+                    alert(`Nama Pengguna atau Kata Sandi Salah! Percobaan: ${attempts}/${maxAttempts}`);
                 }
             }
         }, 1000);
 
     } catch (err) {
         loader.style.display = "none";
-        alert("Terjadi kesalahan saat login.");
+        alert("Terjadi Kesalahan Saat Login.");
         console.error(err);
     }
 });

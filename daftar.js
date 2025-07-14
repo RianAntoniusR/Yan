@@ -63,7 +63,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
         }, 1500);
     } catch (error) {
         loader.style.display = "none";
-        alert("Terjadi kesalahan saat mendaftar.");
+        alert("Terjadi Kesalahan Saat Mendaftar.");
         console.error(error);
     }
 });
