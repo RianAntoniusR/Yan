@@ -38,7 +38,7 @@ async function hashPassword(password) {
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim().toLowerCase();
+    const username = document.getElementById("username").value.trim(); // Tidak pakai .toLowerCase()
     const password = document.getElementById("password").value.trim();
     const loader = document.getElementById("loader");
     const loginButton = document.querySelector("button[type='submit']");
@@ -69,13 +69,13 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             loader.style.display = "none";
 
             if (userData.password === hashedInputPassword) {
-                // Sukses login
+                // Login sukses
                 localStorage.setItem("activeUser", username);
                 localStorage.removeItem("login_attempts");
                 alert(`Selamat Datang Kembali, ${username}!`);
                 window.location.href = "beranda.html";
             } else {
-                // Gagal login
+                // Login gagal
                 attempts++;
                 localStorage.setItem("login_attempts", attempts);
 
@@ -85,7 +85,6 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
                     let countdown = blockDuration;
                     countdownEl.textContent = `Coba Lagi Dalam ${countdown} detik`;
-                    countdownEl.classList.remove("hidden");
 
                     const interval = setInterval(() => {
                         countdown--;
@@ -94,7 +93,6 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                         if (countdown <= 0) {
                             clearInterval(interval);
                             countdownEl.textContent = "";
-                            countdownEl.classList.add("hidden");
                             loginButton.disabled = false;
                             localStorage.setItem("login_attempts", 0);
                         }

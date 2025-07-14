@@ -1,21 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
     const username = localStorage.getItem("activeUser");
-    const userDisplay = document.getElementById("activeUser");
+    const display = document.getElementById("usernameDisplay");
 
+    // Jika belum login, alihkan ke halaman login
     if (!username) {
-        alert("Anda harus login terlebih dahulu.");
-        window.location.href = "index.html"; // kembali ke login
+        alert("Silakan login terlebih dahulu.");
+        window.location.href = "index.html";
         return;
     }
 
     // Tampilkan nama pengguna
-    userDisplay.textContent = username;
+    display.textContent = username.charAt(0).toUpperCase() + username.slice(1);
 
-    // Tombol logout
+    // Logout
     const logoutBtn = document.getElementById("logoutBtn");
     logoutBtn.addEventListener("click", () => {
         localStorage.removeItem("activeUser");
-        alert("Anda telah keluar.");
+        alert("Anda telah logout.");
         window.location.href = "index.html";
     });
 });
