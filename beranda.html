@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rian - Beranda</title>
+    <link rel="stylesheet" href="1-cs/beranda.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h2 id="navbarUser">Selamat datang...</h2>
+        <button id="logoutBtn">Logout</button>
+    </nav>
+
+    <!-- Header Halaman -->
+    <header class="header-title">
+        <h1>Aplikasi Keuangan Pribadi</h1>
+        <p>Catat pengeluaran dan pemasukan harianmu dengan mudah!</p>
+        <p id="tanggalSekarang"></p>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="main-container">
+
+        <!-- Ringkasan Saldo -->
+        <section class="summary-box">
+            <div class="saldo-box">
+                <h3>Total Saldo</h3>
+                <p id="totalSaldo">Rp 0</p>
+            </div>
+            <div class="index-box">
+                <div class="pemasukan-box">
+                    <h4>Pemasukan</h4>
+                    <p id="totalMasuk" class="pemasukan">Rp 0</p>
+                </div>
+                <div class="pengeluaran-box">
+                    <h4>Pengeluaran</h4>
+                    <p id="totalKeluar" class="pengeluaran">Rp 0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Bulan -->
+        <section class="bulan-box">
+            <h3>Data Bulan: <span id="bulanAktif">-</span></h3>
+            <label for="bulanFilter">Pilih Bulan:</label>
+            <input type="month" id="bulanFilter" />
+        </section>
+
+        <!-- Grafik Keuangan -->
+        <section class="chart-box">
+            <h3>Grafik Keuangan</h3>
+            <canvas id="chartKeuangan" height="200"></canvas>
+        </section>
+
+        <!-- Input Transaksi -->
+        <section class="input-box">
+            <h3>Catat Transaksi</h3>
+            <input type="text" id="inputTransaksi" placeholder="Contoh: pemasukan 10000 atau pengeluaran 5000" />
+            <button id="prosesBtn">Catat</button>
+            <p id="statusMsg"></p>
+        </section>
+
+        <!-- Riwayat Transaksi -->
+        <section class="riwayat-box">
+            <h3>Riwayat Transaksi</h3>
+            <ul id="riwayatList"></ul>
+        </section>
+
+        <!-- Export Data -->
+        <section class="export-box">
+            <h3>Ekspor Data</h3>
+            <a href="https://sheetdb.io/api/v1/fon8xhkttw3ou/export?sheet=Sheet2" target="_blank">
+                <button id="exportBtn">⬇️ Export Keuangan (.CSV)</button>
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Template Transaksi (opsional untuk JavaScript) -->
+    <template id="transaksiItemTemplate">
+        <li class="transaksi-item">
+            <span class="waktu"></span> -
+            <span class="jenis"></span>:
+            <span class="jumlah"></span>
+            <button class="hapusBtn">❌</button>
+        </li>
+    </template>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Aplikasi Keuangan oleh Rian Antonius R.</p>
+    </footer>
+
+    <!-- Script -->
+    <script src="beranda.js"></script>
+</body>
+
+</html>

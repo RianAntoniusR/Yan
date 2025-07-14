@@ -1,136 +1,155 @@
-/* Reset & layout dasar */
-body {
+/* Reset dasar */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1400&q=80');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    padding: 20px;
+    overflow: hidden;
 }
 
 /* Kotak login */
-.login-container {
-    /* transparan putih */
-    backdrop-filter: blur(10px);
-    /* efek blur */
+.login-box {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(10px);
-    /* dukungan Safari */
     padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    /* pinggiran lembut */
-}
-
-
-/* Foto profil bulat */
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #3498db;
-    margin-bottom: 1rem;
-}
-
-/* Judul */
-h2 {
-    margin: 0 0 1rem;
-    color: #333;
-}
-
-/* Input */
-input[type="text"],
-input[type="password"] {
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
     width: 100%;
-    padding: 12px;
-    margin: 8px 0;
+    max-width: 380px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
+/* Judul login */
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: black;
+}
+
+/* Input group */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 40px 10px 35px;
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 16px;
+    outline: none;
+}
+
+/* Ikon user & lock */
+.input-group i.fa-user,
+.input-group i.fa-lock {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+/* Ikon mata */
+.input-group i#togglePassword {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #666;
+    cursor: pointer;
+}
+
+/* Catatan kecil */
+.note {
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    margin-bottom: 15px;
+    margin-left: 3px;
 }
 
 /* Tombol login */
-button[type="submit"] {
+.btn-login {
     width: 100%;
     padding: 12px;
-    background-color: #3498db;
+    background: #667eea;
+    border: none;
+    border-radius: 8px;
     color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
+    transition: background 0.3s;
 }
 
-button[type="submit"]:hover {
-    background-color: #2980b9;
+.btn-login:hover {
+    background: #5a67d8;
 }
 
-/* Tombol mata 👁️ */
-button.eye-btn {
-    padding: 6px 10px;
-    font-size: 16px;
-    margin-left: 5px;
-    background-color: #ccc;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+/* Loader animasi */
+.loader {
+    display: none;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid blue;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 15px auto;
 }
 
-button.eye-btn:hover {
-    background-color: #bbb;
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-/* Error dan countdown */
-#error-msg,
-#countdown {
+/* Pesan kesalahan atau info */
+.info-message {
+    text-align: center;
     color: red;
-    font-size: 0.9em;
+    font-size: 14px;
+    min-height: 20px;
     margin-top: 10px;
 }
 
 /* Responsif untuk HP */
-@media screen and (max-width: 480px) {
-    .login-container {
+@media (max-width: 480px) {
+    .login-box {
         padding: 1.5rem;
-        border-radius: 16px;
-        width: 90%;
-        max-width: 95%;
+        border-radius: 10px;
     }
 
-    .profile-pic {
-        width: 80px;
-        height: 80px;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    button[type="submit"] {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    button.eye-btn {
-        font-size: 14px;
-        padding: 4px 8px;
-    }
-
-    h2 {
+    .login-box h2 {
         font-size: 20px;
     }
 
-    #error-msg,
-    #countdown {
-        font-size: 0.8em;
+    .input-group input {
+        padding: 10px 35px 10px 30px;
+        font-size: 15px;
+    }
+
+    .btn-login {
+        font-size: 15px;
+        padding: 10px;
     }
 }
