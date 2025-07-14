@@ -8,67 +8,83 @@ async function hashPassword(password) {
         .join("");
 }
 
+// Fungsi untuk format username: Kapital di awal kata
+function formatUsername(input) {
+    return input
+        .toLowerCase()
+        .split(" ")
+        .filter(word => word.trim() !== "")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
+
+// Format otomatis saat mengetik
+document.getElementById("username").addEventListener("input", function (e) {
+    const caretPos = this.selectionStart;
+    const formatted = formatUsername(this.value);
+    this.value = formatted;
+    this.setSelectionRange(caretPos, caretPos);
+});
+
 // Tangani form pendaftaran
 document.getElementById("registerForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim(); // Tidak pakai .toLowerCase()
+    const rawInput = document.getElementById("username").value.trim();
+    const username = formatUsername(rawInput);
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
     const hint = document.getElementById("hint").value.trim();
     const loader = document.getElementById("loader");
 
-    // Validasi input
-    if (!username || !password || !confirmPassword || !hint) {
-        alert('Semua kolom harus diisi.');
-        return;
-    }
-
-    const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
+    const usernameRegex = /^[A-Za-z\s]{3,}$/;
     if (!usernameRegex.test(username)) {
-        alert('Nama pengguna hanya boleh berisi huruf, angka, atau garis bawah (3–16 karakter).');
+        alert("Nama pengguna hanya boleh berisi huruf dan spasi, minimal 3 karakter.");
         return;
     }
 
     if (password.length < 6) {
-        alert('Kata sandi minimal 6 karakter.');
+        alert("Kata sandi minimal 6 karakter.");
         return;
     }
 
     if (password !== confirmPassword) {
-        alert('Kata sandi dan konfirmasi tidak cocok.');
+        alert("Kata sandi dan konfirmasi tidak cocok.");
         return;
     }
 
     if (hint.length < 3) {
-        alert('Hint terlalu pendek. Minimal 3 karakter.');
+        alert("Hint terlalu pendek. Minimal 3 karakter.");
         return;
     }
 
-    // Cek apakah user sudah ada
     const existingUser = localStorage.getItem(`user_${username}`);
     if (existingUser) {
-        alert('Nama pengguna sudah digunakan. Silakan pilih yang lain.');
+        alert("Nama pengguna sudah digunakan. Silakan pilih yang lain.");
         return;
     }
 
-    // Tampilkan loader
     loader.style.display = "flex";
 
     try {
         const hashedPassword = await hashPassword(password);
-        const userData = { username, password: hashedPassword, hint };
+
+        const userData = {
+            username,
+            password: hashedPassword,
+            hint
+        };
+
         localStorage.setItem(`user_${username}`, JSON.stringify(userData));
 
         setTimeout(() => {
             loader.style.display = "none";
             alert(`Pendaftaran berhasil! Selamat datang, ${username}!`);
-            window.location.href = "index.html";
+            window.location.href = "login.html";
         }, 1500);
-
     } catch (error) {
         loader.style.display = "none";
-        alert("Terjadi kesalahan saat mendaftar.");
+        alert("Terjadi kesalahan saat mendaftar. Silakan coba lagi.");
         console.error(error);
     }
 });

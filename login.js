@@ -38,7 +38,7 @@ async function hashPassword(password) {
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim(); // Tidak pakai .toLowerCase()
+    const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
     const loader = document.getElementById("loader");
     const loginButton = document.querySelector("button[type='submit']");
@@ -69,13 +69,10 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             loader.style.display = "none";
 
             if (userData.password === hashedInputPassword) {
-                // Login sukses
                 localStorage.setItem("activeUser", username);
                 localStorage.removeItem("login_attempts");
-                alert(`Selamat Datang Kembali, ${username}!`);
                 window.location.href = "beranda.html";
             } else {
-                // Login gagal
                 attempts++;
                 localStorage.setItem("login_attempts", attempts);
 

@@ -3,23 +3,24 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Daftar Akun</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Akun - Yann</title>
     <link rel="stylesheet" href="daftar.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-    <!-- Kotak latar belakang blur -->
+    <!-- Latar belakang blur -->
     <div class="background-box"></div>
 
-    <!-- Kontainer form pendaftaran -->
+    <!-- Form pendaftaran -->
     <div class="register-container">
         <h2>Buat Akun Baru</h2>
         <form id="registerForm">
             <div class="input-group">
                 <i class="fas fa-user icon"></i>
-                <input type="text" id="username" placeholder="Nama Pengguna" required />
+                <input type="text" id="username" placeholder="Nama Lengkap" required />
             </div>
             <div class="input-group">
                 <i class="fas fa-lock icon"></i>
@@ -35,17 +36,15 @@
             </div>
             <button type="submit">Daftar</button>
             <p class="login-text">
-                Sudah Punya Akun?
-                <a href="index.html">Masuk</a>
+                Sudah Punya Akun? <a href="login.html">Masuk</a>
             </p>
         </form>
     </div>
 
-    <!-- Loader Overlay -->
+    <!-- Loader -->
     <div class="loader-overlay" id="loader">
         <div class="loader"></div>
     </div>
-
 
     <!-- Script -->
     <script src="daftar.js"></script>
