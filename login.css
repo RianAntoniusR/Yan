@@ -173,10 +173,7 @@ button[type="submit"]:hover {
 
 #countdown {
     margin-top: 15px;
-    padding: 10px 20px;
     background-color: rgba(255, 0, 0, 0.1);
-    border: 1px solid red;
-    border-radius: 8px;
     color: red;
     font-weight: bold;
     text-align: center;
