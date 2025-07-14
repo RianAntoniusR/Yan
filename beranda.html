@@ -2,23 +2,33 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beranda - Yann</title>
-    <link rel="stylesheet" href="beranda.css" />
+    <link rel="stylesheet" href="beranda.css">
 </head>
 
 <body>
-    <header class="header">
-        <h1>Selamat Datang, <span id="usernameDisplay">Pengguna</span>!</h1>
-        <button id="logoutBtn">Logout</button>
+    <header>
+        <h1 id="welcome"></h1>
+        <button id="logout">Keluar</button>
     </header>
-
-    <main class="main-content">
-        <p>Ini adalah halaman beranda setelah Anda berhasil login.</p>
+    <main>
+        <p>Ini adalah halaman beranda utama setelah login.</p>
     </main>
+    <script>
+        const activeUser = localStorage.getItem("activeUser");
+        if (!activeUser) {
+            window.location.href = "login.html";
+        } else {
+            document.getElementById("welcome").textContent = `Selamat Datang, ${activeUser}`;
+        }
 
-    <script src="beranda.js"></script>
+        document.getElementById("logout").addEventListener("click", () => {
+            localStorage.removeItem("activeUser");
+            window.location.href = "login.html";
+        });
+    </script>
 </body>
 
 </html>

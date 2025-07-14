@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Toggle Password Visibility
     const toggleIcon = document.querySelector(".toggle-password");
     const passwordInput = document.getElementById("password");
     if (toggleIcon && passwordInput) {
@@ -10,8 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleIcon.classList.toggle("fa-eye-slash", isPassword);
         });
     }
-
-    // Real-Time Clock
     const clock = document.getElementById("clock");
     function updateClock() {
         if (!clock) return;
@@ -24,17 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     updateClock();
 });
 
-// Fungsi hashing SHA-256
 async function hashPassword(password) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
     const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    return Array.from(new Uint8Array(hashBuffer))
-        .map(b => b.toString(16).padStart(2, "0"))
-        .join("");
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
-// Login logic
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -48,45 +41,33 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     const maxAttempts = 3;
     const blockDuration = 30;
 
-    if (!username || !password) {
-        alert("Harap Isi Semua Kolom.");
-        return;
-    }
+    if (!username || !password) return alert("Harap Isi Semua Kolom.");
 
-    const storedUser = localStorage.getItem(`user_${username}`);
-    if (!storedUser) {
-        alert("Pengguna Tidak Ditemukan.");
-        return;
-    }
+    const storedUser = localStorage.getItem(`user_${username.toLowerCase()}`);
+    if (!storedUser) return alert("Pengguna Tidak Ditemukan.");
 
     loader.style.display = "flex";
-
     try {
         const userData = JSON.parse(storedUser);
         const hashedInputPassword = await hashPassword(password);
 
         setTimeout(() => {
             loader.style.display = "none";
-
             if (userData.password === hashedInputPassword) {
-                localStorage.setItem("activeUser", username);
+                localStorage.setItem("activeUser", userData.username);
                 localStorage.removeItem("login_attempts");
                 window.location.href = "beranda.html";
             } else {
                 attempts++;
                 localStorage.setItem("login_attempts", attempts);
-
                 if (attempts >= maxAttempts) {
-                    alert(`Terlalu Banyak Percobaan Salah. Tombol Login Dinonaktifkan ${blockDuration} detik.`);
+                    alert(`Terlalu Banyak Percobaan Salah. Tombol Dinonaktifkan ${blockDuration} detik.`);
                     loginButton.disabled = true;
-
                     let countdown = blockDuration;
                     countdownEl.textContent = `Coba Lagi Dalam ${countdown} detik`;
-
                     const interval = setInterval(() => {
                         countdown--;
                         countdownEl.textContent = `Coba Lagi Dalam ${countdown} detik`;
-
                         if (countdown <= 0) {
                             clearInterval(interval);
                             countdownEl.textContent = "";
@@ -99,7 +80,6 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                 }
             }
         }, 1000);
-
     } catch (err) {
         loader.style.display = "none";
         alert("Terjadi Kesalahan Saat Login.");
