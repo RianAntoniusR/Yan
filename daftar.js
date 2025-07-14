@@ -1,4 +1,4 @@
-// Fungsi hashing SHA-256
+// Fungsi hashing SHA-256 untuk password
 async function hashPassword(password) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -8,45 +8,62 @@ async function hashPassword(password) {
         .join("");
 }
 
-document.getElementById("loginForm").addEventListener("submit", async function (e) {
+document.getElementById("registerForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
+    const username = document.getElementById("username").value.trim().toLowerCase();
     const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const hint = document.getElementById("hint").value.trim();
     const loader = document.getElementById("loader");
 
-    if (!username || !password) {
-        alert("Harap isi semua kolom.");
+    if (!username || !password || !confirmPassword || !hint) {
+        alert("Semua kolom harus diisi.");
         return;
     }
 
-    const storedUser = localStorage.getItem(`user_${username}`);
-    if (!storedUser) {
-        alert("Pengguna tidak ditemukan.");
+    const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
+    if (!usernameRegex.test(username)) {
+        alert("Nama pengguna hanya boleh huruf/angka/garis bawah (3–16 karakter).");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("Kata sandi minimal 6 karakter.");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert("Kata sandi dan konfirmasi tidak cocok.");
+        return;
+    }
+
+    if (hint.length < 3) {
+        alert("Hint terlalu pendek. Minimal 3 karakter.");
+        return;
+    }
+
+    const existingUser = localStorage.getItem(`user_${username}`);
+    if (existingUser) {
+        alert("Nama pengguna sudah digunakan. Silakan pilih yang lain.");
         return;
     }
 
     loader.style.display = "flex";
 
     try {
-        const userData = JSON.parse(storedUser);
-        const hashedInputPassword = await hashPassword(password);
+        const hashedPassword = await hashPassword(password);
+        const userData = { username, password: hashedPassword, hint };
+        localStorage.setItem(`user_${username}`, JSON.stringify(userData));
 
         setTimeout(() => {
             loader.style.display = "none";
-
-            if (userData.password === hashedInputPassword) {
-                alert(`Selamat datang kembali, ${username}!`);
-                localStorage.setItem("activeUser", username); // Simpan sesi login
-                window.location.href = "beranda.html"; // Halaman utama setelah login
-            } else {
-                alert("Kata sandi salah.");
-            }
-        }, 1000);
-
-    } catch (err) {
+            alert(`Pendaftaran berhasil! Selamat datang, ${username}!`);
+            window.location.href = "login.html";
+        }, 1500);
+    } catch (error) {
         loader.style.display = "none";
-        alert("Terjadi kesalahan saat login.");
-        console.error(err);
+        alert("Terjadi kesalahan saat mendaftar.");
+        console.error(error);
     }
 });
