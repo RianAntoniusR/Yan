@@ -18,34 +18,34 @@ document.getElementById("registerForm").addEventListener("submit", async functio
     const loader = document.getElementById("loader");
 
     if (!username || !password || !confirmPassword || !hint) {
-        alert("Semua kolom harus diisi.");
+        alert("Semua Kolom Harus di Isi.");
         return;
     }
 
     const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
     if (!usernameRegex.test(username)) {
-        alert("Nama pengguna hanya boleh huruf/angka/garis bawah (3–16 karakter).");
+        alert("Nama pengguna Hanya Boleh Menggunakan Huruf/Angka/Garis Bawah (3–16 Karakter).");
         return;
     }
 
     if (password.length < 6) {
-        alert("Kata sandi minimal 6 karakter.");
+        alert("Kata Sandi Minimal 6 Karakter.");
         return;
     }
 
     if (password !== confirmPassword) {
-        alert("Kata sandi dan konfirmasi tidak cocok.");
+        alert("Kata sandi dan Konfirmasi Tidak Cocok.");
         return;
     }
 
     if (hint.length < 3) {
-        alert("Hint terlalu pendek. Minimal 3 karakter.");
+        alert("Hint Terlalu Pendek. Minimal 3 Karakter.");
         return;
     }
 
     const existingUser = localStorage.getItem(`user_${username}`);
     if (existingUser) {
-        alert("Nama pengguna sudah digunakan. Silakan pilih yang lain.");
+        alert("Nama pengguna sudah Digunakan. Silakan Pilih yang Lain.");
         return;
     }
 

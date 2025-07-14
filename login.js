@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Toggle Password Visibility
     const toggleIcon = document.querySelector(".toggle-password");
     const passwordInput = document.getElementById("password");
     if (toggleIcon && passwordInput) {
@@ -10,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Real-Time Clock
     const clock = document.getElementById("clock");
     function updateClock() {
         if (!clock) return;
@@ -22,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateClock();
 });
 
+// Fungsi hashing SHA-256
 async function hashPassword(password) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -31,6 +34,7 @@ async function hashPassword(password) {
         .join("");
 }
 
+// Login logic
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -38,13 +42,17 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     const password = document.getElementById("password").value.trim();
     const loader = document.getElementById("loader");
     const loginButton = document.querySelector("button[type='submit']");
+    const countdownEl = document.getElementById("countdown") || document.createElement("div");
 
-    const countdownEl = document.createElement("div");
-    countdownEl.style.textAlign = "center";
-    countdownEl.style.marginTop = "10px";
-    countdownEl.style.fontWeight = "bold";
-    countdownEl.style.color = "red";
-    loginForm.appendChild(countdownEl);
+    // Tambahkan elemen countdown jika belum ada
+    if (!countdownEl.id) {
+        countdownEl.id = "countdown";
+        countdownEl.style.textAlign = "center";
+        countdownEl.style.marginTop = "10px";
+        countdownEl.style.fontWeight = "bold";
+        countdownEl.style.color = "red";
+        document.getElementById("loginForm").appendChild(countdownEl);
+    }
 
     let attempts = Number(localStorage.getItem("login_attempts")) || 0;
     const maxAttempts = 3;
@@ -71,17 +79,19 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             loader.style.display = "none";
 
             if (userData.password === hashedInputPassword) {
+                // Berhasil login
                 localStorage.setItem("activeUser", username);
                 localStorage.removeItem("login_attempts");
                 alert(`Selamat datang kembali, ${username}!`);
                 window.location.href = "beranda.html";
             } else {
+                // Gagal login
                 attempts++;
                 localStorage.setItem("login_attempts", attempts);
 
                 if (attempts >= maxAttempts) {
                     alert(`Terlalu banyak percobaan salah. Tombol login dinonaktifkan ${blockDuration} detik.`);
-                    if (loginButton) loginButton.disabled = true;
+                    loginButton.disabled = true;
 
                     let countdown = blockDuration;
                     countdownEl.textContent = `Coba lagi dalam ${countdown} detik`;
@@ -93,13 +103,12 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                         if (countdown <= 0) {
                             clearInterval(interval);
                             countdownEl.textContent = "";
-                            if (loginButton) loginButton.disabled = false;
+                            loginButton.disabled = false;
                             localStorage.setItem("login_attempts", 0);
-                            attempts = 0;
                         }
                     }, 1000);
                 } else {
-                    alert(`Nama Pengguna atau Kata Sandi salah! Percobaan: ${attempts}/${maxAttempts}`);
+                    alert(`Nama pengguna atau kata sandi salah! Percobaan: ${attempts}/${maxAttempts}`);
                 }
             }
         }, 1000);
