@@ -1,0 +1,136 @@
+/* Reset & layout dasar */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1400&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Kotak login */
+.login-container {
+    /* transparan putih */
+    backdrop-filter: blur(10px);
+    /* efek blur */
+    -webkit-backdrop-filter: blur(10px);
+    /* dukungan Safari */
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* pinggiran lembut */
+}
+
+
+/* Foto profil bulat */
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #3498db;
+    margin-bottom: 1rem;
+}
+
+/* Judul */
+h2 {
+    margin: 0 0 1rem;
+    color: #333;
+}
+
+/* Input */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+/* Tombol login */
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Tombol mata 👁️ */
+button.eye-btn {
+    padding: 6px 10px;
+    font-size: 16px;
+    margin-left: 5px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button.eye-btn:hover {
+    background-color: #bbb;
+}
+
+/* Error dan countdown */
+#error-msg,
+#countdown {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+/* Responsif untuk HP */
+@media screen and (max-width: 480px) {
+    .login-container {
+        padding: 1.5rem;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 95%;
+    }
+
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    button.eye-btn {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    #error-msg,
+    #countdown {
+        font-size: 0.8em;
+    }
+}
