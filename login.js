@@ -12,36 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Music Toggle & Select
-    const music = document.getElementById("bgmusic");
-    const musicToggleBtn = document.getElementById("musicToggleBtn");
-    const musicSelect = document.getElementById("musicSelect");
-
-    if (music && musicToggleBtn && musicSelect) {
-        musicSelect.addEventListener("change", () => {
-            const selectedFile = musicSelect.value;
-            music.src = `Lagu/${selectedFile}`;
-            music.pause();
-            musicToggleBtn.textContent = "Play Music";
-        });
-
-        musicToggleBtn.addEventListener("click", () => {
-            if (music.paused) {
-                music.play()
-                    .then(() => {
-                        musicToggleBtn.textContent = "Pause Music";
-                    })
-                    .catch((err) => {
-                        console.error("Autoplay failed:", err);
-                        alert("Klik layar dulu untuk mengaktifkan musik.");
-                    });
-            } else {
-                music.pause();
-                musicToggleBtn.textContent = "Play Music";
-            }
-        });
-    }
-
     // Real-Time Clock
     const clock = document.getElementById("clock");
     function updateClock() {
@@ -61,16 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const loader = document.getElementById("loader");
     const loginButton = loginForm?.querySelector('button[type="submit"]');
 
-    // Buat elemen hitung mundur
     const countdownEl = document.createElement("div");
     countdownEl.style.textAlign = "center";
     countdownEl.style.marginTop = "10px";
     countdownEl.style.fontWeight = "bold";
     countdownEl.style.color = "red";
     loginForm.appendChild(countdownEl);
-
-    const adminUsername = "rian";
-    const adminPassword = "admin123";
 
     let attempts = 0;
     const maxAttempts = 3;
@@ -88,11 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            if (username === adminUsername && password === adminPassword) {
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            const foundUser = users.find(
+                (user) => user.username === username && user.password === password
+            );
+
+            if (foundUser) {
                 loader.style.display = "flex";
                 setTimeout(() => {
                     loader.style.display = "none";
-                    alert(`Masuk berhasil, Selamat Datang ${username}`);
+                    alert(`Masuk berhasil, Selamat Datang ${foundUser.username}`);
                     // window.location.href = "beranda.html";
                 }, 2000);
             } else {

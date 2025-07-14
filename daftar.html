@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daftar Akun</title>
+    <link rel="stylesheet" href="daftar.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+    <!-- Kotak latar belakang blur -->
+    <div class="background-box"></div>
+
+    <!-- Kontainer form pendaftaran -->
+    <div class="register-container">
+        <h2>Buat Akun Baru</h2>
+        <form id="registerForm">
+            <div class="input-group">
+                <i class="fas fa-user icon"></i>
+                <input type="text" id="username" placeholder="Nama Pengguna" required />
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock icon"></i>
+                <input type="password" id="password" placeholder="Kata Sandi (min 6 karakter)" required />
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock icon"></i>
+                <input type="password" id="confirmPassword" placeholder="Konfirmasi Kata Sandi" required />
+            </div>
+            <div class="input-group">
+                <i class="fas fa-question icon"></i>
+                <input type="text" id="hint" placeholder="Hint (contoh: nama hewan kesayangan)" required />
+            </div>
+            <button type="submit">Daftar</button>
+            <p class="login-text">
+                Sudah Punya Akun?
+                <a href="login.html">Masuk</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Loader Overlay -->
+    <div class="loader-overlay" id="loader">
+        <div class="loader"></div>
+    </div>
+
+
+    <!-- Script -->
+    <script src="daftar.js"></script>
+</body>
+
+</html>
