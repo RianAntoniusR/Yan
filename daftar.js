@@ -45,7 +45,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
 
     const existingUser = localStorage.getItem(`user_${username}`);
     if (existingUser) {
-        alert("Nama pengguna sudah Digunakan. Silakan Pilih yang Lain.");
+        alert("Nama Pengguna Sudah Digunakan. Silakan Pilih yang Lain.");
         return;
     }
 
@@ -58,8 +58,8 @@ document.getElementById("registerForm").addEventListener("submit", async functio
 
         setTimeout(() => {
             loader.style.display = "none";
-            alert(`Pendaftaran berhasil! Selamat datang, ${username}!`);
-            window.location.href = "login.html";
+            alert(`Pendaftaran berhasil! Selamat Datang, ${username}!`);
+            window.location.href = "beranda.html";
         }, 1500);
     } catch (error) {
         loader.style.display = "none";
