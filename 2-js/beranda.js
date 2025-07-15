@@ -51,7 +51,7 @@ function showToast(pesan) {
 }
 
 // Kata kunci transaksi
-const kataMasuk = ["gaji", "dapat", "dapet", "terima", "bonus", "masuk", "transfer"];
+const kataMasuk = ["gaji", "dapat", "dapet", "terima", "bonus", "masuk", "transfer", "saldo awal"];
 const kataKeluar = ["beli", "bayar", "makan", "jajan", "keluar", "tagihan"];
 
 // Format ke rupiah
