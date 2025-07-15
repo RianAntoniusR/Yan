@@ -4,10 +4,7 @@ if (!username || username.trim() === "") {
     window.location.href = "index.html";
 }
 
-// Ganti dengan URL Apps Script kamu
-const sheetAPI = "https://script.google.com/macros/s/AKfycbyP5CebpgNy9aunl8SBNzlelXWjamBLZDdfQln6EyBNH5G2eZijPm5-XoZnHKg8gRl_VA/exec";
-
-// Elemen HTML
+// Elemen
 const navbarUser = document.getElementById("navbarUser");
 const tanggalSekarang = document.getElementById("tanggalSekarang");
 const bulanAktif = document.getElementById("bulanAktif");
@@ -28,7 +25,7 @@ let transaksiData = [];
 let chart;
 let currentMonth = new Date().toISOString().slice(0, 7);
 
-// Set tanggal & user
+// Tampilkan tanggal & user
 const now = new Date();
 tanggalSekarang.textContent = now.toLocaleDateString("id-ID", {
     weekday: "long", day: "numeric", month: "long", year: "numeric"
@@ -51,18 +48,18 @@ function showToast(pesan) {
     setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-// Kata kunci transaksi
+// Kata kunci
 const kataMasuk = ["gaji", "dapat", "dapet", "terima", "bonus", "masuk", "transfer", "saldo awal"];
 const kataKeluar = ["beli", "bayar", "makan", "jajan", "keluar", "tagihan"];
 
-// Format ke rupiah
+// Format uang
 function formatRupiah(angka) {
     return new Intl.NumberFormat("id-ID", {
         style: "currency", currency: "IDR"
     }).format(angka);
 }
 
-// Parsing input
+// Deteksi jenis dan jumlah
 function parseTransaksi(text) {
     const lower = text.toLowerCase();
     const isMasuk = kataMasuk.some(k => lower.includes(k));
@@ -73,59 +70,40 @@ function parseTransaksi(text) {
     return { jenis, jumlah };
 }
 
-// Simpan transaksi ke Apps Script
-async function simpanTransaksi(catatan, jenis, jumlah) {
-    try {
-        const tgl = new Date().toISOString().split("T")[0];
-        const id = Date.now().toString();
-
-        const data = {
-            method: "add",
-            id,
-            Username: username,
-            Tanggal: tgl,
-            Jenis: jenis,
-            Catatan: catatan,
-            Jumlah: jumlah.toString()
-        };
-
-        const res = await fetch(sheetAPI, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
-
-        if (!res.ok) throw new Error("Gagal simpan");
-        showToast("✅ Transaksi berhasil disimpan!");
-        loadTransaksi();
-    } catch (err) {
-        console.error(err);
-        showToast("❌ Gagal menyimpan transaksi");
-    }
+// Simpan transaksi ke localStorage
+function simpanTransaksi(catatan, jenis, jumlah) {
+    const tanggal = new Date().toISOString().split("T")[0];
+    const waktu = new Date().toLocaleTimeString("id-ID");
+    const data = {
+        id: Date.now().toString(),
+        username,
+        Tanggal: tanggal,
+        Waktu: waktu,
+        Jenis: jenis,
+        Catatan: catatan,
+        Jumlah: jumlah
+    };
+    const semuaData = JSON.parse(localStorage.getItem("dataTransaksi") || "[]");
+    semuaData.push(data);
+    localStorage.setItem("dataTransaksi", JSON.stringify(semuaData));
+    showToast("✅ Transaksi disimpan!");
+    loadTransaksi();
 }
 
-// Ambil data dari Apps Script
-async function loadTransaksi() {
-    try {
-        const bulan = bulanFilter.value;
-        const [tahun, bln] = bulan.split("-");
-
-        const res = await fetch(`${sheetAPI}?method=get&Username=${username}`);
-        const data = await res.json();
-
-        transaksiData = data.filter(item => {
+// Ambil transaksi dari localStorage
+function loadTransaksi() {
+    const [tahun, bln] = bulanFilter.value.split("-");
+    const semuaData = JSON.parse(localStorage.getItem("dataTransaksi") || "[]");
+    transaksiData = semuaData
+        .filter(item => item.username === username)
+        .filter(item => {
             const t = new Date(item.Tanggal);
             return t.getFullYear() == tahun && (t.getMonth() + 1) == parseInt(bln);
         });
-
-        updateUI();
-    } catch (err) {
-        console.error(err);
-        showToast("❌ Gagal memuat data");
-    }
+    updateUI();
 }
 
-// Tampilkan data di UI
+// Tampilkan UI
 function updateUI() {
     riwayatList.innerHTML = "";
     let masuk = 0, keluar = 0;
@@ -153,11 +131,11 @@ function updateUI() {
             <span class="jumlah">${formatRupiah(item.Jumlah)}</span>
             <span class="aksi"><button class="hapusBtn">❌</button></span>
         `;
-        row.querySelector(".hapusBtn").addEventListener("click", () => hapusTransaksi(item));
+        row.querySelector(".hapusBtn").addEventListener("click", () => hapusTransaksi(item.id));
         riwayatList.appendChild(row);
 
-        if (item.Jenis === "Pemasukan") masuk += parseInt(item.Jumlah);
-        if (item.Jenis === "Pengeluaran") keluar += parseInt(item.Jumlah);
+        if (item.Jenis === "Pemasukan") masuk += item.Jumlah;
+        if (item.Jenis === "Pengeluaran") keluar += item.Jumlah;
     });
 
     totalMasuk.textContent = formatRupiah(masuk);
@@ -166,39 +144,29 @@ function updateUI() {
     totalSaldo.textContent = formatRupiah(saldo);
     jumlahTransaksi.textContent = `${transaksiData.length} transaksi`;
 
-    if (saldo < 50000) {
-        showLowBalance();
-    } else {
-        hideLowBalance();
-    }
-
+    saldo < 50000 ? showLowBalance() : hideLowBalance();
     renderChart(masuk, keluar);
 }
 
-// Hapus transaksi via Apps Script
-async function hapusTransaksi(item) {
-    try {
-        if (!item.id) return alert("ID tidak tersedia.");
-
-        const res = await fetch(sheetAPI, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                method: "delete",
-                id: item.id
-            })
-        });
-
-        if (!res.ok) throw new Error("Gagal hapus");
-        showToast("🗑️ Transaksi dihapus");
-        loadTransaksi();
-    } catch (err) {
-        console.error(err);
-        showToast("❌ Gagal menghapus transaksi");
-    }
+// Saldo rendah
+function showLowBalance() {
+    saldoAlert.style.display = "block";
+    saldoAlert.innerText = "⚠️ Saldo Anda di bawah Rp 50.000!";
+}
+function hideLowBalance() {
+    saldoAlert.style.display = "none";
 }
 
-// Tampilkan grafik
+// Hapus transaksi
+function hapusTransaksi(id) {
+    const semuaData = JSON.parse(localStorage.getItem("dataTransaksi") || "[]");
+    const baru = semuaData.filter(item => item.id !== id);
+    localStorage.setItem("dataTransaksi", JSON.stringify(baru));
+    showToast("🗑️ Transaksi dihapus");
+    loadTransaksi();
+}
+
+// Grafik
 function renderChart(masuk, keluar) {
     const ctx = document.getElementById("chartKeuangan").getContext("2d");
     if (chart) chart.destroy();
@@ -224,19 +192,6 @@ function renderChart(masuk, keluar) {
     });
 }
 
-// Alert saldo rendah
-function showLowBalance() {
-    if (saldoAlert) {
-        saldoAlert.style.display = "block";
-        saldoAlert.innerText = "⚠️ Saldo anda dibawah Rp 50.000! Menghematlah kawan.";
-    }
-}
-function hideLowBalance() {
-    if (saldoAlert) {
-        saldoAlert.style.display = "none";
-    }
-}
-
 // Event
 bulanFilter.addEventListener("change", () => {
     bulanAktif.textContent = bulanFilter.value;
@@ -257,7 +212,7 @@ prosesBtn.addEventListener("click", () => {
     statusMsg.textContent = "";
 });
 
-// Auto reload saat bulan berganti
+// Deteksi bulan berganti otomatis
 setInterval(() => {
     const nowMonth = new Date().toISOString().slice(0, 7);
     if (nowMonth !== currentMonth) {
@@ -265,9 +220,9 @@ setInterval(() => {
         bulanFilter.value = nowMonth;
         bulanAktif.textContent = nowMonth;
         loadTransaksi();
-        showToast("📅 Bulan berganti. Data diperbarui otomatis.");
+        showToast("📅 Bulan berganti, data diperbarui otomatis.");
     }
-}, 60 * 1000);
+}, 60000);
 
-// Load pertama kali
+// Load pertama
 loadTransaksi();

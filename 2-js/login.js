@@ -1,5 +1,6 @@
-// Ambil elemen penting
+// Elemen penting
 const loginBtn = document.getElementById('loginBtn');
+const registerBtn = document.getElementById('registerBtn');
 const togglePassword = document.getElementById('togglePassword');
 const passwordInput = document.getElementById('password');
 const loader = document.getElementById('loader');
@@ -8,7 +9,7 @@ const infoMsg = document.getElementById('infoMsg');
 let attempts = 0;
 let isLocked = false;
 
-// Fungsi toggle password 👁️
+// Toggle password 👁️
 togglePassword.addEventListener('click', () => {
     const type = passwordInput.type === 'password' ? 'text' : 'password';
     passwordInput.type = type;
@@ -16,7 +17,7 @@ togglePassword.addEventListener('click', () => {
     togglePassword.classList.toggle('fa-eye-slash');
 });
 
-// Fungsi hash SHA-256
+// Hash SHA-256
 async function hashPassword(text) {
     const encoder = new TextEncoder();
     const data = encoder.encode(text);
@@ -25,7 +26,20 @@ async function hashPassword(text) {
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Fungsi saat salah login
+// Buat akun admin default jika belum ada
+async function initAdminAccount() {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const adminExist = users.some(u => u.username === "admin");
+
+    if (!adminExist) {
+        const hash = await hashPassword("admin123");
+        users.push({ username: "admin", passwordHash: hash });
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+}
+initAdminAccount();
+
+// Penanganan salah login
 function handleWrong(msg) {
     attempts++;
     infoMsg.style.color = "red";
@@ -45,7 +59,7 @@ function handleWrong(msg) {
     }
 }
 
-// Fungsi login utama
+// Proses login
 loginBtn.addEventListener('click', async () => {
     if (isLocked) return;
 
@@ -62,43 +76,56 @@ loginBtn.addEventListener('click', async () => {
     loader.style.display = "block";
     loginBtn.disabled = true;
 
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(u => u.username === username);
     const hashedPassword = await hashPassword(password);
-    const apiUrl = `https://sheetdb.io/api/v1/fon8xhkttw3ou/search?Username=${encodeURIComponent(username)}`;
 
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) throw new Error("HTTP Error");
-            return response.json();
-        })
-        .then(data => {
-            loader.style.display = "none";
-            loginBtn.disabled = false;
+    setTimeout(() => {
+        loader.style.display = "none";
+        loginBtn.disabled = false;
 
-            if (data.length === 0) {
-                handleWrong("Username tidak ditemukan.");
-                return;
-            }
+        if (!user) {
+            handleWrong("Username tidak ditemukan.");
+            return;
+        }
 
-            const user = data[0];
+        if (user.passwordHash === hashedPassword) {
+            infoMsg.style.color = "green";
+            infoMsg.textContent = `Login berhasil. Selamat datang, ${username}!`;
+            localStorage.setItem("loggedInUser", username);
 
-            // Periksa kecocokan hash
-            if (user.Password_hash === hashedPassword) {
-                infoMsg.style.color = "green";
-                infoMsg.textContent = `Login berhasil. Selamat datang, ${username}!`;
+            setTimeout(() => {
+                window.location.href = "beranda.html";
+            }, 1500);
+        } else {
+            handleWrong("Password salah.");
+        }
+    }, 1000);
+});
 
-                localStorage.setItem("loggedInUser", username);
-                setTimeout(() => {
-                    window.location.href = "beranda.html";
-                }, 1500);
-            } else {
-                handleWrong("Password salah.");
-            }
-        })
-        .catch(err => {
-            loader.style.display = "none";
-            loginBtn.disabled = false;
-            infoMsg.style.color = "red";
-            infoMsg.textContent = "Terjadi kesalahan saat menghubungi server.";
-            console.error("Login error:", err);
-        });
+// Proses daftar akun
+registerBtn.addEventListener('click', async () => {
+    const username = document.getElementById('username').value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!username || !password) {
+        infoMsg.style.color = "red";
+        infoMsg.textContent = "Silakan isi username dan password.";
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const exists = users.find(u => u.username === username);
+
+    if (exists) {
+        infoMsg.style.color = "red";
+        infoMsg.textContent = "Username sudah terdaftar.";
+        return;
+    }
+
+    const hash = await hashPassword(password);
+    users.push({ username, passwordHash: hash });
+    localStorage.setItem("users", JSON.stringify(users));
+    infoMsg.style.color = "green";
+    infoMsg.textContent = "✅ Akun berhasil dibuat! Silakan login.";
 });
