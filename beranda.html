@@ -41,6 +41,10 @@
                     <h4>Pengeluaran</h4>
                     <p id="totalKeluar" class="pengeluaran">Rp 0</p>
                 </div>
+                <div class="total-transaksi-box">
+                    <h4>Total Transaksi</h4>
+                    <p id="jumlahTransaksi">0 transaksi</p>
+                </div>
             </div>
         </section>
 
@@ -48,7 +52,7 @@
         <section class="bulan-box">
             <h3>Data Bulan: <span id="bulanAktif">-</span></h3>
             <label for="bulanFilter">Pilih Bulan:</label>
-            <input type="month" id="bulanFilter" />
+            <input type="month" id="bulanFilter" min="2025-01" max="2026-12" />
         </section>
 
         <!-- Grafik Keuangan -->
@@ -60,7 +64,7 @@
         <!-- Input Transaksi -->
         <section class="input-box">
             <h3>Catat Transaksi</h3>
-            <input type="text" id="inputTransaksi" placeholder="Contoh: pemasukan 10000 atau pengeluaran 5000" />
+            <input type="text" id="inputTransaksi" placeholder="Contoh: gaji Rp 1.000.000 atau beli pulsa Rp 20.000" />
             <button id="prosesBtn">Catat</button>
             <p id="statusMsg"></p>
         </section>
@@ -78,10 +82,9 @@
                 <button id="exportBtn">⬇️ Export Keuangan (.CSV)</button>
             </a>
         </section>
-
     </main>
 
-    <!-- Template Transaksi (opsional untuk JavaScript) -->
+    <!-- Template Transaksi -->
     <template id="transaksiItemTemplate">
         <li class="transaksi-item">
             <span class="waktu"></span> -
@@ -91,13 +94,19 @@
         </li>
     </template>
 
+    <!-- Toast Notifikasi -->
+    <div id="toast" class="toast hide">Notifikasi</div>
+
+    <!-- ⚠️ Pengingat Saldo Rendah -->
+    <div id="lowBalanceAlert">⚠️ Saldo Anda rendah!</div>
+
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2025 Aplikasi Keuangan oleh Rian Antonius R.</p>
     </footer>
 
     <!-- Script -->
-    <script src="beranda.js"></script>
+    <script src="2-js/beranda.js"></script>
 </body>
 
 </html>
