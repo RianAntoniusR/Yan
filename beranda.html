@@ -64,9 +64,15 @@
         <!-- Input Transaksi -->
         <section class="input-box">
             <h3>Catat Transaksi</h3>
-            <input type="text" id="inputTransaksi" placeholder="Contoh: gaji Rp 1.000.000 atau beli pulsa Rp 20.000" />
+            <input type="text" id="inputTransaksi"
+                placeholder="Contoh: saldo awal Rp 50.000 atau beli pulsa Rp 20.000" />
             <button id="prosesBtn">Catat</button>
             <p id="statusMsg"></p>
+            <p class="catatan-info">
+                Wajib menggunakan kata Rp sebelum angka total dan titik (.) jangan menggunakan koma (,)<strong> (Contoh
+                    yang benar: Rp 123.321) (Contoh yang salah: 123,321)</strong><br />
+                Kata kunci yang dikenali: <em>gaji, beli, bayar, saldo awal, jajan, dll</em>
+            </p>
         </section>
 
         <!-- Riwayat Transaksi -->
@@ -97,8 +103,8 @@
     <!-- Toast Notifikasi -->
     <div id="toast" class="toast hide">Notifikasi</div>
 
-    <!-- ⚠️ Pengingat Saldo Rendah -->
-    <div id="lowBalanceAlert">⚠️ Saldo Anda rendah!</div>
+    <!-- Pengingat Saldo Rendah -->
+    <div id="lowBalanceAlert" class="low-balance-alert">⚠️ Saldo Anda rendah!</div>
 
     <!-- Footer -->
     <footer class="footer">

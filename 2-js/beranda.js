@@ -142,10 +142,12 @@ function updateUI() {
     [...transaksiData].reverse().forEach(item => {
         const row = document.createElement("div");
         row.className = "transaksi-item";
+        const bersihCatatan = item.Catatan.replace(/rp\s?[\d.]+/gi, "").trim();
+
         row.innerHTML = `
             <span class="tgl">${item.Tanggal}</span>
             <span class="jenis">${item.Jenis}</span>
-            <span class="catatan">${item.Catatan}</span>
+            <span class="catatan">${bersihCatatan}</span>
             <span class="jumlah">${formatRupiah(item.Jumlah)}</span>
             <span class="aksi"><button class="hapusBtn">❌</button></span>
         `;
