@@ -4,6 +4,9 @@ if (!username || username.trim() === "") {
     window.location.href = "index.html";
 }
 
+// Ganti dengan URL Apps Script kamu
+const sheetAPI = "https://script.google.com/macros/s/AKfycbyP5CebpgNy9aunl8SBNzlelXWjamBLZDdfQln6EyBNH5G2eZijPm5-XoZnHKg8gRl_VA/exec";
+
 // Elemen HTML
 const navbarUser = document.getElementById("navbarUser");
 const tanggalSekarang = document.getElementById("tanggalSekarang");
@@ -21,8 +24,6 @@ const logoutBtn = document.getElementById("logoutBtn");
 const toast = document.getElementById("toast");
 const saldoAlert = document.getElementById("lowBalanceAlert");
 
-const sheetAPI = "https://sheetdb.io/api/v1/fon8xhkttw3ou";
-const sheetName = "Untuk menyimpan data keuangan";
 let transaksiData = [];
 let chart;
 let currentMonth = new Date().toISOString().slice(0, 7);
@@ -72,13 +73,14 @@ function parseTransaksi(text) {
     return { jenis, jumlah };
 }
 
-// Simpan transaksi
+// Simpan transaksi ke Apps Script
 async function simpanTransaksi(catatan, jenis, jumlah) {
     try {
         const tgl = new Date().toISOString().split("T")[0];
         const id = Date.now().toString();
 
         const data = {
+            method: "add",
             id,
             Username: username,
             Tanggal: tgl,
@@ -87,10 +89,10 @@ async function simpanTransaksi(catatan, jenis, jumlah) {
             Jumlah: jumlah.toString()
         };
 
-        const res = await fetch(`${sheetAPI}?sheet=${sheetName}`, {
+        const res = await fetch(sheetAPI, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ data })
+            body: JSON.stringify(data)
         });
 
         if (!res.ok) throw new Error("Gagal simpan");
@@ -102,13 +104,13 @@ async function simpanTransaksi(catatan, jenis, jumlah) {
     }
 }
 
-// Ambil transaksi
+// Ambil data dari Apps Script
 async function loadTransaksi() {
     try {
         const bulan = bulanFilter.value;
         const [tahun, bln] = bulan.split("-");
 
-        const res = await fetch(`${sheetAPI}/search?sheet=${sheetName}&Username=${username}`);
+        const res = await fetch(`${sheetAPI}?method=get&Username=${username}`);
         const data = await res.json();
 
         transaksiData = data.filter(item => {
@@ -123,7 +125,7 @@ async function loadTransaksi() {
     }
 }
 
-// Tampilkan UI
+// Tampilkan data di UI
 function updateUI() {
     riwayatList.innerHTML = "";
     let masuk = 0, keluar = 0;
@@ -164,7 +166,6 @@ function updateUI() {
     totalSaldo.textContent = formatRupiah(saldo);
     jumlahTransaksi.textContent = `${transaksiData.length} transaksi`;
 
-    // Pengingat saldo rendah
     if (saldo < 50000) {
         showLowBalance();
     } else {
@@ -174,25 +175,18 @@ function updateUI() {
     renderChart(masuk, keluar);
 }
 
-function showLowBalance() {
-    if (saldoAlert) {
-        saldoAlert.style.display = "block";
-        saldoAlert.innerText = "⚠️ Saldo anda dibawah Rp 50.000! Menghematlah kawan.";
-    }
-}
-
-function hideLowBalance() {
-    if (saldoAlert) {
-        saldoAlert.style.display = "none";
-    }
-}
-
-// Hapus transaksi
+// Hapus transaksi via Apps Script
 async function hapusTransaksi(item) {
     try {
         if (!item.id) return alert("ID tidak tersedia.");
-        const res = await fetch(`${sheetAPI}/id/${item.id}?sheet=${sheetName}`, {
-            method: "DELETE"
+
+        const res = await fetch(sheetAPI, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                method: "delete",
+                id: item.id
+            })
         });
 
         if (!res.ok) throw new Error("Gagal hapus");
@@ -204,7 +198,7 @@ async function hapusTransaksi(item) {
     }
 }
 
-// Grafik
+// Tampilkan grafik
 function renderChart(masuk, keluar) {
     const ctx = document.getElementById("chartKeuangan").getContext("2d");
     if (chart) chart.destroy();
@@ -230,6 +224,19 @@ function renderChart(masuk, keluar) {
     });
 }
 
+// Alert saldo rendah
+function showLowBalance() {
+    if (saldoAlert) {
+        saldoAlert.style.display = "block";
+        saldoAlert.innerText = "⚠️ Saldo anda dibawah Rp 50.000! Menghematlah kawan.";
+    }
+}
+function hideLowBalance() {
+    if (saldoAlert) {
+        saldoAlert.style.display = "none";
+    }
+}
+
 // Event
 bulanFilter.addEventListener("change", () => {
     bulanAktif.textContent = bulanFilter.value;
@@ -250,7 +257,7 @@ prosesBtn.addEventListener("click", () => {
     statusMsg.textContent = "";
 });
 
-// Deteksi pergantian bulan otomatis
+// Auto reload saat bulan berganti
 setInterval(() => {
     const nowMonth = new Date().toISOString().slice(0, 7);
     if (nowMonth !== currentMonth) {
@@ -262,5 +269,5 @@ setInterval(() => {
     }
 }, 60 * 1000);
 
-// Load awal
+// Load pertama kali
 loadTransaksi();
