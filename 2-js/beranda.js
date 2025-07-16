@@ -55,6 +55,7 @@ function initApp(email) {
     const logoutBtn = document.getElementById("logoutBtn");
     const toast = document.getElementById("toast");
     const saldoAlert = document.getElementById("lowBalanceAlert");
+    const exportBtn = document.getElementById("exportBtn");
 
     let transaksiData = [];
     let chart;
@@ -116,7 +117,7 @@ function initApp(email) {
 
     async function simpanTransaksi(catatan, jenis, jumlah) {
         const tanggal = new Date().toISOString().split("T")[0];
-        const waktu = new Date().toTimeString().split(" ")[0]; // format ISO: HH:mm:ss
+        const waktu = new Date().toTimeString().split(" ")[0];
         const data = {
             email,
             Tanggal: tanggal,
@@ -124,7 +125,7 @@ function initApp(email) {
             Jenis: jenis,
             Catatan: catatan,
             Jumlah: jumlah,
-            dibuat: Timestamp.now() // ⬅️ tambahkan timestamp di sini
+            dibuat: Timestamp.now()
         };
 
         try {
@@ -272,6 +273,57 @@ function initApp(email) {
         saldo < 50000 ? showLowBalance() : hideLowBalance();
         renderChart(masuk, keluar);
     }
+
+    // ✅ Fitur ekspor CSV per bulan dan per akun dengan tanggal
+    exportBtn.addEventListener("click", async () => {
+        try {
+            const [tahun, bulan] = bulanFilter.value.split("-");
+            const q = query(collection(db, "transaksi"), where("email", "==", email));
+            const snapshot = await getDocs(q);
+
+            const dataCSV = [];
+
+            snapshot.forEach(doc => {
+                const d = doc.data();
+                if (!d.Tanggal) return;
+                const tanggal = new Date(d.Tanggal);
+                const tBulan = tanggal.getMonth() + 1;
+                const tTahun = tanggal.getFullYear();
+
+                if (parseInt(bulan) === tBulan && parseInt(tahun) === tTahun) {
+                    dataCSV.push({
+                        Tanggal: d.Tanggal,
+                        Waktu: d.Waktu || "",
+                        Jenis: d.Jenis || "",
+                        Catatan: d.Catatan || "",
+                        Jumlah: d.Jumlah || 0
+                    });
+                }
+            });
+
+            if (dataCSV.length === 0) {
+                showToast("⚠️ Tidak ada data untuk bulan ini.");
+                return;
+            }
+
+            const header = "Tanggal,Waktu,Jenis,Catatan,Jumlah";
+            const rows = dataCSV.map(d =>
+                `"${d.Tanggal}","${d.Waktu}","${d.Jenis}","${d.Catatan.replace(/"/g, '""')}","${d.Jumlah}"`
+            );
+            const csvContent = [header, ...rows].join("\n");
+
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `keuangan_${email.replace(/[@.]/g, "_")}_${tahun}_${bulan.padStart(2, "0")}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("❌ Gagal ekspor data:", error);
+            showToast("❌ Gagal ekspor ke CSV.");
+        }
+    });
 
     loadTransaksi();
 }
