@@ -17,28 +17,6 @@ togglePassword.addEventListener('click', () => {
     togglePassword.classList.toggle('fa-eye-slash');
 });
 
-// Hash SHA-256
-async function hashPassword(text) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(text);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-// Buat akun admin default jika belum ada
-async function initAdminAccount() {
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    const adminExist = users.some(u => u.username === "admin");
-
-    if (!adminExist) {
-        const hash = await hashPassword("admin123");
-        users.push({ username: "admin", passwordHash: hash });
-        localStorage.setItem("users", JSON.stringify(users));
-    }
-}
-initAdminAccount();
-
 // Penanganan salah login
 function handleWrong(msg) {
     attempts++;
@@ -59,7 +37,7 @@ function handleWrong(msg) {
     }
 }
 
-// Proses login
+// Proses login (Firebase Auth)
 loginBtn.addEventListener('click', async () => {
     if (isLocked) return;
 
@@ -76,34 +54,37 @@ loginBtn.addEventListener('click', async () => {
     loader.style.display = "block";
     loginBtn.disabled = true;
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.username === username);
-    const hashedPassword = await hashPassword(password);
+    const email = `${username}@rian.com`; // email dari username
 
-    setTimeout(() => {
+    try {
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        loader.style.display = "none";
+        loginBtn.disabled = false;
+        infoMsg.style.color = "green";
+        infoMsg.textContent = `Login berhasil. Selamat datang, ${username}!`;
+
+        // Simpan user (opsional)
+        localStorage.setItem("loggedInUser", username);
+
+        setTimeout(() => {
+            window.location.href = "beranda.html";
+        }, 1500);
+    } catch (error) {
         loader.style.display = "none";
         loginBtn.disabled = false;
 
-        if (!user) {
+        if (error.code === 'auth/user-not-found') {
             handleWrong("Username tidak ditemukan.");
-            return;
-        }
-
-        if (user.passwordHash === hashedPassword) {
-            infoMsg.style.color = "green";
-            infoMsg.textContent = `Login berhasil. Selamat datang, ${username}!`;
-            localStorage.setItem("loggedInUser", username);
-
-            setTimeout(() => {
-                window.location.href = "beranda.html";
-            }, 1500);
-        } else {
+        } else if (error.code === 'auth/wrong-password') {
             handleWrong("Password salah.");
+        } else {
+            infoMsg.style.color = "red";
+            infoMsg.textContent = error.message;
         }
-    }, 1000);
+    }
 });
 
-// Proses daftar akun
+// Proses daftar akun (Firebase Auth)
 registerBtn.addEventListener('click', async () => {
     const username = document.getElementById('username').value.trim();
     const password = passwordInput.value.trim();
@@ -114,18 +95,19 @@ registerBtn.addEventListener('click', async () => {
         return;
     }
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const exists = users.find(u => u.username === username);
+    const email = `${username}@rian.com`;
 
-    if (exists) {
-        infoMsg.style.color = "red";
-        infoMsg.textContent = "Username sudah terdaftar.";
-        return;
+    try {
+        await firebase.auth().createUserWithEmailAndPassword(email, password);
+        infoMsg.style.color = "green";
+        infoMsg.textContent = "✅ Akun berhasil dibuat! Silakan login.";
+    } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+            infoMsg.style.color = "red";
+            infoMsg.textContent = "Username sudah terdaftar.";
+        } else {
+            infoMsg.style.color = "red";
+            infoMsg.textContent = error.message;
+        }
     }
-
-    const hash = await hashPassword(password);
-    users.push({ username, passwordHash: hash });
-    localStorage.setItem("users", JSON.stringify(users));
-    infoMsg.style.color = "green";
-    infoMsg.textContent = "✅ Akun berhasil dibuat! Silakan login.";
 });

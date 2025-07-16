@@ -52,7 +52,7 @@ body {
     background-color: rgba(255, 255, 255, 0.85);
 }
 
-/* Ikon user & kunci */
+/* Ikon input (user & lock) */
 .input-group i.fa-user,
 .input-group i.fa-lock {
     position: absolute;
@@ -63,7 +63,7 @@ body {
 }
 
 /* Ikon mata */
-.input-group i#togglePassword {
+#togglePassword {
     position: absolute;
     top: 50%;
     right: 10px;
@@ -135,7 +135,6 @@ body {
     .login-box {
         padding: 1.5rem;
         border-radius: 12px;
-        margin-top: 0;
     }
 
     .login-box h2 {
@@ -161,4 +160,26 @@ body {
         width: 25px;
         height: 25px;
     }
+}
+
+
+a.btn-login {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #667eea;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+a.btn-login:hover {
+    background: #5a67d8;
+    transform: scale(1.02);
 }

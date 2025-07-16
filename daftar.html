@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rian - Daftar Akun</title>
+    <link rel="stylesheet" href="1-cs/daftar.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Form Pendaftaran</h2>
+        <form id="formDaftar">
+            <label for="nama">Nama Lengkap</label>
+            <input type="text" id="nama" name="nama" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" required>
+                <span class="toggle" onclick="togglePassword('password', this)">
+                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 4.5C7 4.5 2.7 8.1 1 12c1.7 3.9 6 7.5 11 7.5s9.3-3.6 11-7.5c-1.7-3.9-6-7.5-11-7.5zm0 13c-3 0-5.5-2.5-5.5-5.5S9 6.5 12 6.5s5.5 2.5 5.5 5.5-2.5 5.5-5.5 5.5zm0-9a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" />
+                    </svg>
+                </span>
+            </div>
+
+            <label for="konfirmasi">Konfirmasi Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="konfirmasi" name="konfirmasi" required>
+                <span class="toggle" onclick="togglePassword('konfirmasi', this)">
+                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 4.5C7 4.5 2.7 8.1 1 12c1.7 3.9 6 7.5 11 7.5s9.3-3.6 11-7.5c-1.7-3.9-6-7.5-11-7.5zm0 13c-3 0-5.5-2.5-5.5-5.5S9 6.5 12 6.5s5.5 2.5 5.5 5.5-2.5 5.5-5.5 5.5zm0-9a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" />
+                    </svg>
+                </span>
+            </div>
+
+            <button type="submit">Daftar</button>
+            <p id="pesanStatus"></p>
+        </form>
+        <p>Sudah punya akun? <a href="index.html">Masuk di sini</a></p>
+    </div>
+
+    <script>
+        function togglePassword(id, el) {
+            const input = document.getElementById(id);
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+            el.classList.toggle("active", isHidden);
+        }
+
+        document.getElementById("formDaftar").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const password = document.getElementById("password").value;
+            const konfirmasi = document.getElementById("konfirmasi").value;
+            const status = document.getElementById("pesanStatus");
+
+            if (password !== konfirmasi) {
+                status.textContent = "❌ Password dan konfirmasi tidak cocok.";
+                status.style.color = "red";
+                return;
+            }
+
+            status.textContent = "✅ Password cocok. Proses daftar...";
+            status.style.color = "green";
+
+            // Lanjutkan ke proses Firebase di daftar.js
+        });
+    </script>
+
+    <script type="module" src="2-js/daftar.js"></script>
+</body>
+
+</html>

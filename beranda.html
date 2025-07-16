@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rian - Beranda</title>
     <link rel="stylesheet" href="1-cs/beranda.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js"></script>
-    <script type="module" src="2-js/beranda.js"></script>
 
     <!-- Chart.js untuk grafik -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- JavaScript utama -->
-    <script src="2-js/beranda.js" defer></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js"></script>
+
+    <!-- JavaScript utama sebagai module -->
+    <script type="module" src="2-js/beranda.js"></script>
 </head>
 
 <body>
@@ -94,8 +94,7 @@
         <!-- Export Data -->
         <section class="export-box">
             <h3>Ekspor Data</h3>
-            <a href="https://script.google.com/macros/s/AKfycbwNGIQppfONHK6HnWfLLdGkSJhuVbpIWefCY1llYVXHmshW9F1GtKFrDvSRdRsgGM0-kw/exec"
-                target="_blank">
+            <a href="#" target="_blank">
                 <button id="exportBtn">⬇️ Export Keuangan (.CSV)</button>
             </a>
         </section>
@@ -115,15 +114,12 @@
     <div id="toast" class="toast hide">Notifikasi</div>
 
     <!-- Pengingat Saldo Rendah -->
-    <div id="lowBalanceAlert" class="low-balance-alert">⚠️ Saldo Anda rendah!</div>
+    <div id="lowBalanceAlert" class="low-balance-alert">⚠️ Saldo Anda rendah dibawah Rp50.000!</div>
 
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2025 Aplikasi Keuangan oleh Rian Antonius R.</p>
     </footer>
-
-    <!-- Script -->
-    <script src="2-js/beranda.js"></script>
 </body>
 
 </html>
