@@ -244,10 +244,10 @@ function initApp(email) {
         transaksiData.forEach(item => {
             const template = document.getElementById("transaksiItemTemplate");
             const clone = template.content.cloneNode(true);
-            clone.querySelector(".tanggal").textContent = `${item.Tanggal} ${item.Waktu}`;
+            clone.querySelector(".tanggal").textContent = `${item.Tanggal}`;
             clone.querySelector(".waktu").textContent = item.Waktu;
             clone.querySelector(".jenis").textContent = item.Jenis;
-            clone.querySelector(".catatan").textContent = item.Catatan;
+            clone.querySelector(".catatan").textContent = item.Catatan.replace(/\s*rp\s?[\d.]+/gi, "").trim();
             clone.querySelector(".jumlah").textContent = formatRupiah(item.Jumlah);
             clone.querySelector(".hapusBtn").addEventListener("click", () => hapusTransaksi(item.id));
             riwayatList.appendChild(clone);
