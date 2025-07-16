@@ -1,8 +1,21 @@
-// Final JavaScript: beranda.js (Firebase Auth + Firestore + Real-Time Greeting)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    where,
+    getDocs,
+    deleteDoc,
+    doc
+} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 
+// Konfigurasi Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyD5H7rS9_ny1C4x5UrpgFjI-fRLYQLqeys",
     authDomain: "catatankeuangan-8dbc5.firebaseapp.com",
@@ -12,20 +25,20 @@ const firebaseConfig = {
     appId: "1:196148251395:web:279c4d4bc9753dd783b736"
 };
 
-initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 onAuthStateChanged(auth, user => {
     if (user) {
-        const username = user.email.split("@")[0];
-        initApp(username);
+        const email = user.email;
+        initApp(email);
     } else {
         window.location.href = "index.html";
     }
 });
 
-function initApp(username) {
+function initApp(email) {
     const navbarUser = document.getElementById("navbarUser");
     const tanggalSekarang = document.getElementById("tanggalSekarang");
     const bulanAktif = document.getElementById("bulanAktif");
@@ -59,7 +72,7 @@ function initApp(username) {
         tanggalSekarang.textContent = now.toLocaleDateString("id-ID", {
             weekday: "long", day: "numeric", month: "long", year: "numeric"
         });
-        navbarUser.textContent = `${getSapaan()}, ${username}!`;
+        navbarUser.textContent = `${getSapaan()}, ${email}!`;
     }
 
     tampilkanWaktu();
@@ -104,7 +117,7 @@ function initApp(username) {
         const tanggal = new Date().toISOString().split("T")[0];
         const waktu = new Date().toLocaleTimeString("id-ID");
         const data = {
-            username,
+            email,
             Tanggal: tanggal,
             Waktu: waktu,
             Jenis: jenis,
@@ -127,7 +140,7 @@ function initApp(username) {
         transaksiData = [];
 
         try {
-            const q = query(collection(db, "transaksi"), where("username", "==", username));
+            const q = query(collection(db, "transaksi"), where("email", "==", email));
             const snapshot = await getDocs(q);
 
             snapshot.forEach(docSnap => {
@@ -162,6 +175,7 @@ function initApp(username) {
         saldoAlert.style.display = "block";
         saldoAlert.innerText = "⚠️ Saldo Anda di bawah Rp 50.000!";
     }
+
     function hideLowBalance() {
         saldoAlert.style.display = "none";
     }
@@ -220,6 +234,37 @@ function initApp(username) {
             showToast("📅 Bulan berganti, data diperbarui otomatis.");
         }
     }, 60000);
+
+    function updateUI() {
+        let masuk = 0, keluar = 0;
+        riwayatList.innerHTML = "";
+
+        transaksiData.sort((a, b) => new Date(b.Tanggal + "T" + b.Waktu) - new Date(a.Tanggal + "T" + a.Waktu));
+
+        transaksiData.forEach(item => {
+            const template = document.getElementById("transaksiItemTemplate");
+            const clone = template.content.cloneNode(true);
+            clone.querySelector(".tanggal").textContent = `${item.Tanggal} ${item.Waktu}`;
+            clone.querySelector(".waktu").textContent = item.Waktu;
+            clone.querySelector(".jenis").textContent = item.Jenis;
+            clone.querySelector(".catatan").textContent = item.Catatan;
+            clone.querySelector(".jumlah").textContent = formatRupiah(item.Jumlah);
+            clone.querySelector(".hapusBtn").addEventListener("click", () => hapusTransaksi(item.id));
+            riwayatList.appendChild(clone);
+
+            if (item.Jenis === "Pemasukan") masuk += item.Jumlah;
+            else if (item.Jenis === "Pengeluaran") keluar += item.Jumlah;
+        });
+
+        const saldo = masuk - keluar;
+        totalMasuk.textContent = formatRupiah(masuk);
+        totalKeluar.textContent = formatRupiah(keluar);
+        totalSaldo.textContent = formatRupiah(saldo);
+        jumlahTransaksi.textContent = `${transaksiData.length} transaksi`;
+
+        saldo < 50000 ? showLowBalance() : hideLowBalance();
+        renderChart(masuk, keluar);
+    }
 
     loadTransaksi();
 }

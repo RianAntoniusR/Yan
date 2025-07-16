@@ -17,7 +17,7 @@
 
         <div class="input-group">
             <i class="fas fa-user"></i>
-            <input type="text" id="username" placeholder="Username" />
+            <input type="email" id="email" placeholder="Email" />
         </div>
 
         <div class="input-group">
@@ -26,37 +26,15 @@
             <i class="fas fa-eye" id="togglePassword"></i>
         </div>
 
-        <p class="note">Masukkan username dan password Anda</p>
+        <p class="note">Masukkan email dan password Anda</p>
 
         <button class="btn-login" id="loginBtn">Masuk</button>
-        <a href="daftar.html" class="btn-login">Daftar</a>
-
-
         <div class="loader" id="loader" style="display: none;"></div>
         <div class="info-message" id="infoMsg"></div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-
-    <script>
-        // Ganti dengan konfigurasi Firebase milikmu
-        const firebaseConfig = {
-            apiKey: "AIzaSyD5H7rS9_ny1C4x5UrpgFjI-fRLYQLqeys",
-            authDomain: "catatankeuangan-8dbc5.firebaseapp.com",
-            projectId: "catatankeuangan-8dbc5",
-            storageBucket: "catatankeuangan-8dbc5.firebasestorage.app",
-            messagingSenderId: "196148251395",
-            appId: "1:196148251395:web:279c4d4bc9753dd783b736"
-        };
-
-        // Inisialisasi Firebase
-        firebase.initializeApp(firebaseConfig);
-    </script>
-
-    <!-- Script eksternal -->
-    <script src="2-js/login.js"></script>
+    <!-- Script login -->
+    <script type="module" src="2-js/login.js"></script>
 </body>
 
 </html>

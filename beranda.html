@@ -4,39 +4,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rian - Beranda</title>
+    <title>Beranda Keuangan</title>
     <link rel="stylesheet" href="1-cs/beranda.css" />
-
-    <!-- Chart.js untuk grafik -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js"></script>
-
-    <!-- JavaScript utama sebagai module -->
     <script type="module" src="2-js/beranda.js"></script>
 </head>
 
 <body>
-    <!-- Navbar -->
     <nav class="navbar">
         <h2 id="navbarUser">Selamat datang...</h2>
         <button id="logoutBtn">Logout</button>
     </nav>
 
-    <!-- Header Halaman -->
     <header class="header-title">
         <h1>Aplikasi Keuangan Pribadi</h1>
         <p>Catat pengeluaran dan pemasukan harianmu dengan mudah!</p>
         <p id="tanggalSekarang"></p>
     </header>
 
-    <!-- Konten Utama -->
     <main class="main-container">
-
-        <!-- Ringkasan Saldo -->
         <section class="summary-box">
             <div class="saldo-box">
                 <h3>Total Saldo</h3>
@@ -58,65 +47,57 @@
             </div>
         </section>
 
-        <!-- Filter Bulan -->
         <section class="bulan-box">
             <h3>Data Bulan: <span id="bulanAktif">-</span></h3>
             <label for="bulanFilter">Pilih Bulan:</label>
             <input type="month" id="bulanFilter" min="2025-01" max="2026-12" />
         </section>
 
-        <!-- Grafik Keuangan -->
         <section class="chart-box">
             <h3>Grafik Keuangan</h3>
             <canvas id="chartKeuangan" height="200"></canvas>
         </section>
 
-        <!-- Input Transaksi -->
         <section class="input-box">
             <h3>Catat Transaksi</h3>
-            <input type="text" id="inputTransaksi"
-                placeholder="Contoh: saldo awal Rp 50.000 atau beli pulsa Rp 20.000" />
+            <input type="text" id="inputTransaksi" placeholder="Contoh: beli pulsa Rp 20.000" />
             <button id="prosesBtn">Catat</button>
             <p id="statusMsg"></p>
-            <p class="catatan-info">
-                Wajib menggunakan kata Rp sebelum angka total dan titik (.) jangan menggunakan koma (,)<strong> (Contoh
-                    yang benar: Rp 123.321) (Contoh yang salah: 123,321)</strong><br />
-                Kata kunci yang dikenali: <em>gaji, beli, bayar, saldo awal, jajan, dll</em>
-            </p>
         </section>
 
-        <!-- Riwayat Transaksi -->
         <section class="riwayat-box">
             <h3>Riwayat Transaksi</h3>
-            <ul id="riwayatList"></ul>
+            <div class="riwayat-header">
+                <span>Tanggal</span>
+                <span>Waktu</span>
+                <span>Jenis</span>
+                <span>Catatan</span>
+                <span>Jumlah</span>
+                <span>Aksi</span>
+            </div>
+            <ul id="riwayatList" class="riwayat-list"></ul>
         </section>
 
-        <!-- Export Data -->
         <section class="export-box">
             <h3>Ekspor Data</h3>
-            <a href="#" target="_blank">
-                <button id="exportBtn">⬇️ Export Keuangan (.CSV)</button>
-            </a>
+            <button id="exportBtn">⬇️ Export (.CSV)</button>
         </section>
     </main>
 
-    <!-- Template Transaksi -->
     <template id="transaksiItemTemplate">
-        <li class="transaksi-item">
-            <span class="waktu"></span> -
-            <span class="jenis"></span>:
+        <li class="transaksi-row">
+            <span class="tanggal"></span>
+            <span class="waktu"></span>
+            <span class="jenis"></span>
+            <span class="catatan"></span>
             <span class="jumlah"></span>
             <button class="hapusBtn">❌</button>
         </li>
     </template>
 
-    <!-- Toast Notifikasi -->
-    <div id="toast" class="toast hide">Notifikasi</div>
+    <div id="toast" class="toast">Notifikasi</div>
+    <div id="lowBalanceAlert" class="low-balance-alert">⚠️ Saldo Anda rendah!</div>
 
-    <!-- Pengingat Saldo Rendah -->
-    <div id="lowBalanceAlert" class="low-balance-alert">⚠️ Saldo Anda rendah dibawah Rp50.000!</div>
-
-    <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2025 Aplikasi Keuangan oleh Rian Antonius R.</p>
     </footer>
