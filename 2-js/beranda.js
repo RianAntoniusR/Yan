@@ -12,7 +12,8 @@ import {
     where,
     getDocs,
     deleteDoc,
-    doc
+    doc,
+    Timestamp
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 
 // Konfigurasi Firebase
@@ -115,14 +116,15 @@ function initApp(email) {
 
     async function simpanTransaksi(catatan, jenis, jumlah) {
         const tanggal = new Date().toISOString().split("T")[0];
-        const waktu = new Date().toLocaleTimeString("id-ID");
+        const waktu = new Date().toTimeString().split(" ")[0]; // format ISO: HH:mm:ss
         const data = {
             email,
             Tanggal: tanggal,
             Waktu: waktu,
             Jenis: jenis,
             Catatan: catatan,
-            Jumlah: jumlah
+            Jumlah: jumlah,
+            dibuat: Timestamp.now() // ⬅️ tambahkan timestamp di sini
         };
 
         try {
@@ -239,7 +241,12 @@ function initApp(email) {
         let masuk = 0, keluar = 0;
         riwayatList.innerHTML = "";
 
-        transaksiData.sort((a, b) => new Date(b.Tanggal + "T" + b.Waktu) - new Date(a.Tanggal + "T" + a.Waktu));
+        transaksiData.sort((a, b) => {
+            if (a.dibuat && b.dibuat) {
+                return b.dibuat.seconds - a.dibuat.seconds;
+            }
+            return new Date(b.Tanggal + "T" + b.Waktu) - new Date(a.Tanggal + "T" + a.Waktu);
+        });
 
         transaksiData.forEach(item => {
             const template = document.getElementById("transaksiItemTemplate");
