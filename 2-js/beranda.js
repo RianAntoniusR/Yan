@@ -13,10 +13,10 @@ import {
     getDocs,
     deleteDoc,
     doc,
+    getDoc,
     Timestamp
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 
-// Konfigurasi Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyD5H7rS9_ny1C4x5UrpgFjI-fRLYQLqeys",
     authDomain: "catatankeuangan-8dbc5.firebaseapp.com",
@@ -30,16 +30,45 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async (user) => {
     if (user) {
-        const email = user.email;
-        initApp(email);
+        const uid = user.uid;
+        let displayName = "Pengguna"; // default
+
+        try {
+            const userDoc = await getDoc(doc(db, "users", uid));
+
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                console.log("🔥 Data user dari Firestore:", data);
+                displayName = data.nama;
+                document.getElementById("navbarUser").textContent = `Selamat Pagi, ${displayName}!`;
+            } else {
+                console.warn("⚠️ Dokumen user tidak ditemukan");
+            }
+        } catch (error) {
+            console.error("❌ Gagal mengambil data user:", error);
+        }
+
+        // HARUS di luar try/catch
+        initApp(displayName);
+
     } else {
         window.location.href = "index.html";
     }
 });
 
-function initApp(email) {
+
+
+function getSapaan() {
+    const jam = new Date().getHours();
+    if (jam >= 4 && jam < 11) return "Selamat Pagi";
+    if (jam >= 11 && jam < 15) return "Selamat Siang";
+    if (jam >= 15 && jam < 18) return "Selamat Sore";
+    return "Selamat Malam";
+}
+
+function initApp(displayName) {
     const navbarUser = document.getElementById("navbarUser");
     const tanggalSekarang = document.getElementById("tanggalSekarang");
     const bulanAktif = document.getElementById("bulanAktif");
@@ -57,28 +86,21 @@ function initApp(email) {
     const saldoAlert = document.getElementById("lowBalanceAlert");
     const exportBtn = document.getElementById("exportBtn");
 
-    let transaksiData = [];
-    let chart;
-    let currentMonth = new Date().toISOString().slice(0, 7);
-
-    function getSapaan() {
-        const jam = new Date().getHours();
-        if (jam >= 4 && jam < 11) return "Selamat pagi";
-        if (jam >= 11 && jam < 15) return "Selamat siang";
-        if (jam >= 15 && jam < 18) return "Selamat sore";
-        return "Selamat malam";
-    }
-
     function tampilkanWaktu() {
         const now = new Date();
         tanggalSekarang.textContent = now.toLocaleDateString("id-ID", {
             weekday: "long", day: "numeric", month: "long", year: "numeric"
         });
-        navbarUser.textContent = `${getSapaan()}, ${email}!`;
+        navbarUser.textContent = `${getSapaan()}, ${displayName}!`;
+
     }
 
     tampilkanWaktu();
     setInterval(tampilkanWaktu, 60000);
+
+    let transaksiData = [];
+    let chart;
+    let currentMonth = new Date().toISOString().slice(0, 7);
 
     bulanFilter.min = "2025-01";
     bulanFilter.value = currentMonth;
@@ -119,7 +141,7 @@ function initApp(email) {
         const tanggal = new Date().toISOString().split("T")[0];
         const waktu = new Date().toTimeString().split(" ")[0];
         const data = {
-            email,
+            email: displayName,
             Tanggal: tanggal,
             Waktu: waktu,
             Jenis: jenis,
@@ -143,7 +165,7 @@ function initApp(email) {
         transaksiData = [];
 
         try {
-            const q = query(collection(db, "transaksi"), where("email", "==", email));
+            const q = query(collection(db, "transaksi"), where("email", "==", displayName));
             const snapshot = await getDocs(q);
 
             snapshot.forEach(docSnap => {
@@ -242,17 +264,12 @@ function initApp(email) {
         let masuk = 0, keluar = 0;
         riwayatList.innerHTML = "";
 
-        transaksiData.sort((a, b) => {
-            if (a.dibuat && b.dibuat) {
-                return b.dibuat.seconds - a.dibuat.seconds;
-            }
-            return new Date(b.Tanggal + "T" + b.Waktu) - new Date(a.Tanggal + "T" + a.Waktu);
-        });
+        transaksiData.sort((a, b) => b.dibuat?.seconds - a.dibuat?.seconds);
 
         transaksiData.forEach(item => {
             const template = document.getElementById("transaksiItemTemplate");
             const clone = template.content.cloneNode(true);
-            clone.querySelector(".tanggal").textContent = `${item.Tanggal}`;
+            clone.querySelector(".tanggal").textContent = item.Tanggal;
             clone.querySelector(".waktu").textContent = item.Waktu;
             clone.querySelector(".jenis").textContent = item.Jenis;
             clone.querySelector(".catatan").textContent = item.Catatan.replace(/\s*rp\s?[\d.]+/gi, "").trim();
@@ -274,11 +291,10 @@ function initApp(email) {
         renderChart(masuk, keluar);
     }
 
-    // ✅ Fitur ekspor CSV per bulan dan per akun dengan tanggal
     exportBtn.addEventListener("click", async () => {
         try {
             const [tahun, bulan] = bulanFilter.value.split("-");
-            const q = query(collection(db, "transaksi"), where("email", "==", email));
+            const q = query(collection(db, "transaksi"), where("email", "==", displayName));
             const snapshot = await getDocs(q);
 
             const dataCSV = [];
@@ -316,7 +332,7 @@ function initApp(email) {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `keuangan_${email.replace(/[@.]/g, "_")}_${tahun}_${bulan.padStart(2, "0")}.csv`;
+            a.download = `keuangan_${displayName.replace(/[@.]/g, "_")}_${tahun}_${bulan.padStart(2, "0")}.csv`;
             a.click();
             URL.revokeObjectURL(url);
         } catch (error) {
