@@ -42,7 +42,7 @@ onAuthStateChanged(auth, async (user) => {
                 const data = userDoc.data();
                 console.log("🔥 Data user dari Firestore:", data);
                 displayName = data.nama;
-                document.getElementById("navbarUser").textContent = `Selamat Pagi, ${displayName}!`;
+                document.getElementById("navbarUser ").textContent = `Selamat Pagi, ${displayName}!`;
             } else {
                 console.warn("⚠️ Dokumen user tidak ditemukan");
             }
@@ -50,15 +50,11 @@ onAuthStateChanged(auth, async (user) => {
             console.error("❌ Gagal mengambil data user:", error);
         }
 
-        // HARUS di luar try/catch
         initApp(displayName);
-
     } else {
-        window.location.href = "index.html";
+        window.location.href = "index.html"; // Redirect ke halaman login jika tidak terautentikasi
     }
 });
-
-
 
 function getSapaan() {
     const jam = new Date().getHours();
@@ -69,7 +65,7 @@ function getSapaan() {
 }
 
 function initApp(displayName) {
-    const navbarUser = document.getElementById("navbarUser");
+    const navbarUser = document.getElementById("navbarUser ");
     const tanggalSekarang = document.getElementById("tanggalSekarang");
     const bulanAktif = document.getElementById("bulanAktif");
     const bulanFilter = document.getElementById("bulanFilter");
@@ -92,7 +88,6 @@ function initApp(displayName) {
             weekday: "long", day: "numeric", month: "long", year: "numeric"
         });
         navbarUser.textContent = `${getSapaan()}, ${displayName}!`;
-
     }
 
     tampilkanWaktu();
@@ -118,8 +113,8 @@ function initApp(displayName) {
         setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
-    const kataMasuk = ["gaji", "dapat", "dapet", "terima", "bonus", "masuk", "transfer", "saldo awal"];
-    const kataKeluar = ["beli", "bayar", "makan", "jajan", "keluar", "tagihan"];
+    const kataMasuk = ["gaji", "dapat", "dapet", "terima", "bonus", "masuk", "transfer", "saldo awal", "pemasukan", "upah"];
+    const kataKeluar = ["beli", "bayar", "makan", "jajan", "keluar", "tagihan", "kasih", "pengeluaran", "belanja", "pajak"];
 
     function formatRupiah(angka) {
         return new Intl.NumberFormat("id-ID", {
@@ -209,20 +204,26 @@ function initApp(displayName) {
         const ctx = document.getElementById("chartKeuangan").getContext("2d");
         if (chart) chart.destroy();
         chart = new Chart(ctx, {
-            type: "doughnut",
+            type: "line", // Ubah dari "doughnut" menjadi "line"
             data: {
-                labels: ["Pemasukan", "Pengeluaran"],
+                labels: ["Pemasukan", "Pengeluaran"], // Sesuaikan label jika perlu
                 datasets: [{
-                    data: [masuk, keluar],
-                    backgroundColor: ["#00ff7f", "#ff6347"],
-                    borderWidth: 1
+                    label: 'Pemasukan',
+                    data: [masuk], // Data pemasukan
+                    borderColor: "#00ff7f",
+                    fill: false
+                }, {
+                    label: 'Pengeluaran',
+                    data: [keluar], // Data pengeluaran
+                    borderColor: "#ff6347",
+                    fill: false
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: "bottom",
+                        position: "top",
                         labels: { color: "#fff" }
                     }
                 }
@@ -250,15 +251,15 @@ function initApp(displayName) {
     });
 
     setInterval(() => {
-        const nowMonth = new Date().toISOString().slice(0, 7);
-        if (nowMonth !== currentMonth) {
-            currentMonth = nowMonth;
-            bulanFilter.value = nowMonth;
-            bulanAktif.textContent = nowMonth;
+        const now = new Date();
+        const currentDate = now.toISOString().split("T")[0];
+        if (currentDate !== bulanFilter.value) {
+            bulanFilter.value = currentDate;
+            bulanAktif.textContent = currentDate;
             loadTransaksi();
-            showToast("📅 Bulan berganti, data diperbarui otomatis.");
+            showToast("📅 Hari berganti, data diperbarui otomatis.");
         }
-    }, 60000);
+    }, 60000); // Cek setiap menit
 
     function updateUI() {
         let masuk = 0, keluar = 0;
@@ -297,25 +298,13 @@ function initApp(displayName) {
             const q = query(collection(db, "transaksi"), where("email", "==", displayName));
             const snapshot = await getDocs(q);
 
-            const dataCSV = [];
-
-            snapshot.forEach(doc => {
-                const d = doc.data();
-                if (!d.Tanggal) return;
-                const tanggal = new Date(d.Tanggal);
-                const tBulan = tanggal.getMonth() + 1;
-                const tTahun = tanggal.getFullYear();
-
-                if (parseInt(bulan) === tBulan && parseInt(tahun) === tTahun) {
-                    dataCSV.push({
-                        Tanggal: d.Tanggal,
-                        Waktu: d.Waktu || "",
-                        Jenis: d.Jenis || "",
-                        Catatan: d.Catatan || "",
-                        Jumlah: d.Jumlah || 0
-                    });
-                }
-            });
+            const dataCSV = transaksiData.map(item => ({
+                Tanggal: item.Tanggal, // Tanggal transaksi
+                Waktu: item.Waktu || "",
+                Jenis: item.Jenis || "",
+                Catatan: item.Catatan,
+                Jumlah: item.Jumlah || 0
+            }));
 
             if (dataCSV.length === 0) {
                 showToast("⚠️ Tidak ada data untuk bulan ini.");
