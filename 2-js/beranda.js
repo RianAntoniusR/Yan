@@ -165,7 +165,7 @@ function initApp(displayName) {
 
     function showLowBalance() {
         saldoAlert.style.display = "block";
-        saldoAlert.innerText = "⚠️ Saldo Anda di bawah Rp 50.000!";
+        saldoAlert.innerText = "⚠️ Saldo Anda di bawah Rp 50.000! Menghematlah Kawan";
     }
 
     function hideLowBalance() {
