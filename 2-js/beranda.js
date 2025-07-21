@@ -176,31 +176,77 @@ function initApp(displayName) {
         const ctx = document.getElementById("chartKeuangan").getContext("2d");
         if (chart) chart.destroy();
 
-        const labels = transaksiData.map(t => t.Tanggal);
-        const dataMasuk = transaksiData.map(t => t.Jenis === "Pemasukan" ? t.Jumlah : 0);
-        const dataKeluar = transaksiData.map(t => t.Jenis === "Pengeluaran" ? t.Jumlah : 0);
+        // Kelompokkan data berdasarkan tanggal
+        const grouped = {};
+        transaksiData.forEach(t => {
+            if (!grouped[t.Tanggal]) {
+                grouped[t.Tanggal] = { masuk: 0, keluar: 0 };
+            }
+            if (t.Jenis === "Pemasukan") grouped[t.Tanggal].masuk += t.Jumlah;
+            if (t.Jenis === "Pengeluaran") grouped[t.Tanggal].keluar += t.Jumlah;
+        });
 
+        // Urutkan tanggal secara kronologis
+        const labels = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
+
+        // Siapkan data grafik
+        const dataMasuk = labels.map(tgl => grouped[tgl].masuk);
+        const dataKeluar = labels.map(tgl => grouped[tgl].keluar);
+
+        // Buat grafik
         chart = new Chart(ctx, {
             type: "line",
             data: {
                 labels: labels,
                 datasets: [
-                    { label: "Pemasukan", data: dataMasuk, borderColor: "#00ff7f", fill: false },
-                    { label: "Pengeluaran", data: dataKeluar, borderColor: "#ff6347", fill: false }
+                    {
+                        label: "Pemasukan",
+                        data: dataMasuk,
+                        borderColor: "#00ff7f",
+                        backgroundColor: "#00ff7f33",
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: "Pengeluaran",
+                        data: dataKeluar,
+                        borderColor: "#ff6347",
+                        backgroundColor: "#ff634733",
+                        fill: true,
+                        tension: 0.3
+                    }
                 ]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: "bottom", labels: { color: "#fff" } }
+                    legend: {
+                        position: "bottom",
+                        labels: { color: "#fff" }
+                    }
                 },
                 scales: {
-                    x: { ticks: { color: "#fff" } },
-                    y: { ticks: { color: "#fff" } }
+                    x: {
+                        ticks: { color: "#fff" },
+                        title: {
+                            display: true,
+                            text: "Tanggal",
+                            color: "#fff"
+                        }
+                    },
+                    y: {
+                        ticks: { color: "#fff" },
+                        title: {
+                            display: true,
+                            text: "Jumlah (Rp)",
+                            color: "#fff"
+                        }
+                    }
                 }
             }
         });
     }
+
 
     async function loadTransaksi() {
         const [tahun, bln] = bulanFilter.value.split("-");
