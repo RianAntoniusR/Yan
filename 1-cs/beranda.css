@@ -193,6 +193,13 @@ body::before {
     color: #fff;
 }
 
+#riwayatList {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+
 .transaksi-row .jumlah {
     font-weight: bold;
 }
