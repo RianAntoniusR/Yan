@@ -131,17 +131,35 @@ function initApp(displayName) {
     }
 
     async function simpanTransaksi(catatan, jenis, jumlah) {
-        const tanggal = new Date().toISOString().split("T")[0];
-        const waktu = new Date().toTimeString().split(" ")[0];
+        const now = new Date();
+
+        // Tentukan offset zona waktu
+        const offset = -now.getTimezoneOffset();
+        let zona = "";
+        if (offset === 420) zona = "WIB";
+        else if (offset === 480) zona = "WITA";
+        else if (offset === 540) zona = "WIT";
+        else zona = Intl.DateTimeFormat().resolvedOptions().timeZone || "Zona Tidak Dikenal";
+
+        // Buat tanggal dan waktu dari waktu lokal
+        const tanggal = now.toLocaleDateString("sv-SE"); // yyyy-mm-dd
+        const waktu = now.toLocaleTimeString("id-ID", {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+
         const data = {
-            email: displayName,
+            email: auth.currentUser.email,
+            nama: displayName,
             Tanggal: tanggal,
-            Waktu: waktu,
+            Waktu: `${waktu} ${zona}`,
             Jenis: jenis,
             Catatan: catatan,
             Jumlah: jumlah,
             dibuat: Timestamp.now()
         };
+
         try {
             await addDoc(collection(db, "transaksi"), data);
             showToast("✅ Transaksi disimpan!");
@@ -151,6 +169,7 @@ function initApp(displayName) {
             showToast("❌ Gagal menyimpan data!");
         }
     }
+
 
     async function hapusTransaksi(id) {
         try {
@@ -253,7 +272,7 @@ function initApp(displayName) {
         transaksiData = [];
 
         try {
-            const q = query(collection(db, "transaksi"), where("email", "==", displayName));
+            const q = query(collection(db, "transaksi"), where("email", "==", auth.currentUser.email));
             const snapshot = await getDocs(q);
 
             snapshot.forEach(docSnap => {
@@ -278,6 +297,7 @@ function initApp(displayName) {
         riwayatList.innerHTML = "";
 
         transaksiData.sort((a, b) => b.dibuat?.seconds - a.dibuat?.seconds);
+
 
         transaksiData.forEach(item => {
             const template = document.getElementById("transaksiItemTemplate");
