@@ -69,8 +69,8 @@ function formatRupiah(angka) {
 }
 
 function parseTransaksi(text) {
-    const kataMasuk = ["gaji", "dapat", "dapet", "terima", "bonus", "masuk", "transfer", "saldo awal", "pemasukan", "upah"];
-    const kataKeluar = ["beli", "bayar", "makan", "jajan", "keluar", "tagihan", "kasih", "pengeluaran", "belanja", "pajak"];
+    const kataMasuk = ["gaji", "dapat", "dapet", "terima", "bonus", "masuk", "transfer dari", "saldo awal", "pemasukan", "gajian"];
+    const kataKeluar = ["beli", "bayar", "makan", "jajan", "keluar", "tagihan", "kasih", "pengeluaran", "belanja", "pajak", "patungan", "transfer ke", "topup", "top up", "top-up"];
     const lower = text.toLowerCase();
     const isMasuk = kataMasuk.some(k => lower.includes(k));
     const isKeluar = kataKeluar.some(k => lower.includes(k));
