@@ -25,12 +25,13 @@ import {
 
 // --------- EDIT: masukkan konfigurasi Firebase-mu di bawah ini ----------
 const firebaseConfig = {
-    apiKey: "AIzaSyBlgmraKctgG_PtkG39gR4Fq6xqzqe_TRY",
-    authDomain: "instagram-92f0b.firebaseapp.com",
-    projectId: "instagram-92f0b",
-    storageBucket: "instagram-92f0b.firebasestorage.app",
-    messagingSenderId: "718793943946",
-    appId: "1:718793943946:web:e27661634dcabda5fdf673"
+    apiKey: "AIzaSyA0GfDI34zSLtX55Z0ETeeVNcdZYQsi2lE",
+    authDomain: "hyungers-yan.firebaseapp.com",
+    projectId: "hyungers-yan",
+    storageBucket: "hyungers-yan.firebasestorage.app",
+    messagingSenderId: "317469791502",
+    appId: "1:317469791502:web:0850f9e20e3e9c619b335f",
+    measurementId: "G-6YXSGSNLSQ"
 };
 //
 
