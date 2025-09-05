@@ -31,7 +31,6 @@ const firebaseConfig = {
     storageBucket: "hyungers-yan.firebasestorage.app",
     messagingSenderId: "317469791502",
     appId: "1:317469791502:web:0850f9e20e3e9c619b335f",
-    measurementId: "G-6YXSGSNLSQ"
 };
 //
 
