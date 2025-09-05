@@ -1,40 +1,116 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rian - Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Rian Antonius Rantepayung</title>
+    <meta name="description"
+        content="Halaman komentar — login Google diperlukan untuk berkomentar. Termasuk jam real-time, link sosial, dan statistik pengunjung." />
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="1-cs/login.css" />
+
+    <link rel="stylesheet" href="style.css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
 </head>
 
 <body>
-    <div class="login-box">
-        <h2><i class="fas fa-user-circle"></i> Login</h2>
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <!-- Nama di tengah, warna hitam, tanpa garis bawah -->
+            <div class="brand" role="banner" aria-label="Nama situs">
+                <h1 class="site-name">HYUNGERS</h1>
+            </div>
 
-        <div class="input-group">
-            <i class="fas fa-user"></i>
-            <input type="email" id="email" placeholder="Email" />
+            <!-- Jam real-time (otomatis sesuai zona waktu perangkat) -->
+            <div class="clock-card" role="status" aria-live="polite">
+                <div class="clock-time" data-clock aria-label="Jam saat ini">--:--:--</div>
+                <div class="clock-sub">Waktu perangkat (otomatis)</div>
+            </div>
         </div>
+    </header>
 
-        <div class="input-group">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="password" placeholder="Password" />
-            <i class="fas fa-eye" id="togglePassword"></i>
+    <!-- MAIN -->
+    <main class="container" id="main">
+        <!-- SOSIAL MEDIA -->
+
+
+        <!-- STATISTIK (TOTAL PENGUNJUNG) -->
+        <section id="stats" class="card stats" aria-label="Statistik pengunjung">
+            <h2 class="section-title">Statistik</h2>
+            <p class="muted small">Total Pengunjung:</p>
+            <div class="stat-total" data-stats-total>0</div>
+        </section>
+
+        <!-- KOMENTAR -->
+        <section id="komentar" class="card comments" aria-label="Komentar pengguna">
+            <h2 class="section-title">Komentar</h2>
+
+            <!-- PROMPT LOGIN (Default tampil) -->
+            <div class="login-area" data-login-area>
+                <p>Kamu harus <strong>login dengan akun Google</strong> untuk menulis komentar.</p>
+                <button type="button" id="btn-google-login" data-login-google aria-label="Login dengan Google">
+                    <!-- Google logo + teks "Login dengan Google" -->
+                    <span class="google-btn">
+                        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                            <path fill="#EA4335"
+                                d="M24 9.5c3.9 0 7.1 1.4 9.3 3.5l6.9-6.9C36.6 2.5 30.6 0 24 0 14.7 0 6.9 5.2 3 12.8l7.9 6.1C12.6 13.6 17.9 9.5 24 9.5z">
+                            </path>
+                            <path fill="#4285F4"
+                                d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.6c-.5 2.7-2.3 5-4.8 6.6l7.4 5.7C44.9 36.2 46.5 30.7 46.5 24.5z">
+                            </path>
+                            <path fill="#FBBC05"
+                                d="M10.9 28.9A14.9 14.9 0 0 1 10 24.5c0-1.6.3-3.1.9-4.4L3 12.8C1.1 15.7 0 19 0 24.5c0 5.5 1.1 8.8 3 11.7l7.9-6.1z">
+                            </path>
+                            <path fill="#34A853"
+                                d="M24 48c6.6 0 12.6-2.2 16.9-6l-7.4-5.7C30.9 36.9 27.6 38 24 38c-6.1 0-11.4-4.1-12.1-9.4L3 36.9C6.9 43.8 14.7 48 24 48z">
+                            </path>
+                        </svg>
+                        <span class="google-text">Login dengan Google</span>
+                    </span>
+                </button>
+            </div>
+
+            <!-- FORM KOMENTAR (tersimpan/hanya tampil setelah login) -->
+            <div class="comment-form-area" data-comment-area hidden>
+                <div class="user-info">
+                    <img src="" alt="Avatar pengguna" class="avatar" data-user-avatar hidden />
+                    <div class="user-meta">
+                        <div class="user-name" data-user-name></div>
+                        <button type="button" data-logout aria-label="Logout">Logout</button>
+                    </div>
+                </div>
+
+                <form id="comment-form" data-comment-form>
+                    <label for="comment-text" class="visually-hidden">Tulis Komentar</label>
+                    <textarea id="comment-text" name="comment" rows="4" required placeholder="Tulis komentar kamu..."
+                        data-comment-input></textarea>
+                    <div class="comment-actions">
+                        <button type="submit">Kirim Komentar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- DAFTAR KOMENTAR (publik) -->
+            <ul class="comment-list" data-comment-list aria-live="polite">
+                <!-- komentar akan di-render di sini oleh JS/React -->
+            </ul>
+
+            <p class="muted small">Catatan: komentar hanya bisa dikirim setelah login dengan Google dan akan terlihat
+                publik.</p>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; <span id="year"></span> 2025 Hyungers</p>
         </div>
+    </footer>
 
-        <p class="note">Masukkan email dan password Anda</p>
-
-        <button class="btn-login" id="loginBtn">Masuk</button>
-        <div class="loader" id="loader" style="display: none;"></div>
-        <div class="info-message" id="infoMsg"></div>
-    </div>
-
-    <!-- Script login -->
-    <script type="module" src="2-js/login.js"></script>
+    <!-- Script utama (nanti diisi dengan logic clock, auth, comments, stats) -->
+    <script type="module" src="script.js"></script>
 </body>
 
 </html>
